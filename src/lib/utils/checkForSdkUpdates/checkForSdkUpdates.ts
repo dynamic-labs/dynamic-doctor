@@ -1,0 +1,51 @@
+import { getInstallCommand } from '../getInstallCommand';
+import { getInstalledPackages } from '../getInstalledPackages';
+import { getPackageManager } from '../getPackageManager';
+import { DoctorLogger } from '../loggers/DoctorLogger';
+
+const fetchLatestVersion = async (packageName: string) => {
+  const response = await fetch(`https://registry.npmjs.org/${packageName}`);
+  const json = await response.json();
+  return json['dist-tags'].latest;
+};
+
+const checkWhichSdkIsUsed = (packages: any) => {
+  if (packages['@dynamic-labs/sdk-react']) {
+    return '@dynamic-labs/sdk-react';
+  }
+  if (packages['@dynamic-labs/sdk-react-core']) {
+    return '@dynamic-labs/sdk-react-core';
+  }
+  return null;
+}
+
+export const checkForSdkUpdates = async () => {
+  const packages = getInstalledPackages();
+
+  const whichSdk = checkWhichSdkIsUsed(packages);
+  if (!whichSdk) {
+    DoctorLogger.error(
+      "No Dynamic SDK found in package.json. We can't check for updates",
+    );
+    return;
+  }
+
+  const baseSdkReactVersion = packages[whichSdk];
+
+  const latestVersion = await fetchLatestVersion(whichSdk);
+
+  if (baseSdkReactVersion === latestVersion) {
+    DoctorLogger.success(
+      `Your Dynamic SDK is up to date: ${baseSdkReactVersion}`,
+    );
+    return;
+  }
+
+  const packageManager = getPackageManager();
+  const installCommand = getInstallCommand(packageManager.packageManager);
+
+  DoctorLogger.warning(
+    `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
+  );
+  return;
+};
