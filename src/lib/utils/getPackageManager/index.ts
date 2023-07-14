@@ -1,0 +1,1 @@
+export { getPackageManager } from './getPackageManager';

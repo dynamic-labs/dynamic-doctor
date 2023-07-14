@@ -1,0 +1,1 @@
+export { getPackageManagerVersion } from './getPackageManagerVersion';
