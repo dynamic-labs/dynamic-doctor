@@ -1,0 +1,1 @@
+export { startDynamicDoctor } from './startDynamicDoctor';
