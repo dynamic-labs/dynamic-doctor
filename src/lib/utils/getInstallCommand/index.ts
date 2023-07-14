@@ -1,0 +1,1 @@
+export { getInstallCommand } from './getInstallCommand';

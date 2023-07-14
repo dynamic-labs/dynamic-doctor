@@ -1,0 +1,1 @@
+export { getInstalledPackages } from './getInstalledPackages';
