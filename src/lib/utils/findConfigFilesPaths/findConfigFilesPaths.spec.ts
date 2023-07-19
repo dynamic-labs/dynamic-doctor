@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
-import { findPackageJsonPaths } from './findPackageJsonPaths';
+import { findConfigFilesPaths } from './findConfigFilesPaths';
 
 jest.mock('fs');
 
@@ -9,7 +9,7 @@ const mockReaddirSync = readdirSync as jest.Mock;
 const mockStatSync = statSync as jest.Mock;
 const mockDirectory = '/path/to/directory';
 
-describe('findPackageJsonPaths', () => {
+describe('findConfigFilesPaths', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -23,7 +23,7 @@ describe('findPackageJsonPaths', () => {
     mockReaddirSync.mockReturnValue(mockFiles);
     mockStatSync.mockReturnValue(mockStats);
 
-    const result = findPackageJsonPaths(mockDirectory);
+    const result = findConfigFilesPaths(mockDirectory);
 
     expect(mockReaddirSync).toHaveBeenCalledWith(mockDirectory);
     expect(mockStatSync).toHaveBeenCalledWith(join(mockDirectory, 'file1'));
@@ -47,7 +47,7 @@ describe('findPackageJsonPaths', () => {
     mockReaddirSync.mockReturnValue(mockFiles);
     mockStatSync.mockReturnValue(mockStats);
 
-    const result = findPackageJsonPaths(mockDirectory);
+    const result = findConfigFilesPaths(mockDirectory);
 
     expect(mockReaddirSync).toHaveBeenCalledWith(mockDirectory);
     expect(mockStatSync).toHaveBeenCalledWith(join(mockDirectory, 'file1'));
@@ -76,7 +76,7 @@ describe('findPackageJsonPaths', () => {
     mockReaddirSync.mockReturnValue(mockFiles);
     mockStatSync.mockReturnValue(mockStats);
 
-    const result = findPackageJsonPaths(mockDirectory);
+    const result = findConfigFilesPaths(mockDirectory);
 
     expect(mockReaddirSync).toHaveBeenCalledWith(mockDirectory);
     expect(mockStatSync).toHaveBeenCalledWith(join(mockDirectory, 'file1'));

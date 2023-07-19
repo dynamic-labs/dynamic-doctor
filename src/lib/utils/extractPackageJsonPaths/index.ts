@@ -1,0 +1,1 @@
+export {extractPackageJsonPaths} from './extractPackageJsonPaths';

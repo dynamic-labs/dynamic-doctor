@@ -12,12 +12,12 @@ hr
 
 h2 Package.jsons
 
-each packageJson in packageJsons
+each configFile in configFiles
   fieldset
-    legend(style="font-weight: bold;") #{packageJson.path}
+    legend(style="font-weight: bold;") #{configFile.path}
 
     code
-      each item in packageJson.packageJson
+      each item in configFile.configFile
         div
           - var n = item.spaces
           while n > 0

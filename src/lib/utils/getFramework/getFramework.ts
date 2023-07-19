@@ -1,6 +1,7 @@
 import fs from 'fs';
 
-import { findPackageJsonPaths } from '../findPackageJsonPaths';
+import { findConfigFilesPaths } from '../findConfigFilesPaths';
+import { extractPackageJsonPaths } from '../extractPackageJsonPaths';
 
 const getFrameworkFromPackageJsonDependencies = (
   packageJsonDependencies: Record<string, string>,
@@ -18,7 +19,8 @@ const getFrameworkFromPackageJsonDependencies = (
 };
 
 export const getFramework = () => {
-  const allPackageJsonPaths = findPackageJsonPaths(process.cwd());
+  const allConfigFilePaths = findConfigFilesPaths(process.cwd());
+  const allPackageJsonPaths = extractPackageJsonPaths(allConfigFilePaths);
   const parsedPackageJsons = allPackageJsonPaths.map((path) => {
     const file = fs.readFileSync(path, 'utf8');
     return JSON.parse(file);

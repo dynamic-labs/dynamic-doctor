@@ -1,7 +1,7 @@
 import { checkDynamicVersions } from '../../utils/checkDynamicVersions';
 import { checkForSdkUpdates } from '../../utils/checkForSdkUpdates';
 import { generateReport } from '../../utils/generateReport';
-import { getAllPackageJson } from '../../utils/getAllPackageJson';
+import { getAllConfigs } from '../../utils/getAllConfigs';
 import { getBasicData } from '../../utils/getBasicData';
 import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
@@ -15,7 +15,7 @@ export const startDynamicDoctor = () => {
     checkDynamicVersions();
     checkForSdkUpdates();
     const basicData = getBasicData();
-    const packageJsons = getAllPackageJson();
+    const packageJsons = getAllConfigs();
 
     generateReport(basicData, packageJsons);
   } else {

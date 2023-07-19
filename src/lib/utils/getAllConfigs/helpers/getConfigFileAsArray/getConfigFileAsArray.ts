@@ -1,6 +1,6 @@
 import { DoctorLogger } from '../../../loggers/DoctorLogger';
 
-export type PackageJsonRow = {
+export type ConfigFileRow = {
   spaces: number;
   text: string;
 };
@@ -10,22 +10,23 @@ const countSpaces = (line: string): number => {
   return match ? match[0].length : 0;
 };
 
-export const getPackageJsonAsArray = (packageJson: string): PackageJsonRow[] => {
+export const getConfigFileAsArray = (configFile: string, path: string): ConfigFileRow[] => {
   try {
-    const formattedPackageJson = JSON.stringify(
-      JSON.parse(packageJson),
+    const formattedConfigFile = JSON.stringify(
+      JSON.parse(configFile),
       null,
       2,
     );
 
-    return formattedPackageJson.split('\n').map((line) => {
+    return formattedConfigFile.split('\n').map((line) => {
       return {
         spaces: countSpaces(line),
         text: line.trim(),
       }
     });
   } catch (error) {
-    DoctorLogger.error('Error reading package.json file');
+    DoctorLogger.error(`Error reading config file, path: ${path}.
+Caught error: ${error}`);
     return [];
   }
 };

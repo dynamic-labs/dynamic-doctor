@@ -1,10 +1,11 @@
 import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
+import { isFileToFetch } from './helpers/isFileToFetch';
 
 const pathsToIgnore = ['node_modules', 'dist', 'coverage', 'build'];
 
-export const findPackageJsonPaths = (directory: string): string[] => {
-  const packageJsonPaths: string[] = [];
+export const findConfigFilesPaths = (directory: string): string[] => {
+  const configFilesPaths: string[] = [];
 
   const traverseDirectory = (currentPath: string): void => {
     const files = readdirSync(currentPath);
@@ -17,8 +18,8 @@ export const findPackageJsonPaths = (directory: string): string[] => {
 
         if (fileStats.isDirectory()) {
           traverseDirectory(filePath); // Recursively traverse subdirectories
-        } else if (file === 'package.json') {
-          packageJsonPaths.push(filePath);
+        } else if (isFileToFetch(file)) {
+          configFilesPaths.push(filePath);
         }
       }
     }
@@ -26,5 +27,5 @@ export const findPackageJsonPaths = (directory: string): string[] => {
 
   traverseDirectory(directory);
 
-  return packageJsonPaths;
+  return configFilesPaths;
 };

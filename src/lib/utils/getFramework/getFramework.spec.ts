@@ -1,17 +1,17 @@
 import fs from 'fs';
 
-import { findPackageJsonPaths } from '../findPackageJsonPaths';
+import { findConfigFilesPaths } from '../findConfigFilesPaths';
 
 import { getFramework } from './getFramework';
 
 jest.mock('fs');
-jest.mock('../findPackageJsonPaths');
+jest.mock('../findConfigFilesPaths');
 
-const mockFindPackageJsonPaths = findPackageJsonPaths as jest.Mock;
+const mockFindConfigFilesPaths = findConfigFilesPaths as jest.Mock;
 const mockReadFileSync = fs.readFileSync as jest.Mock;
 
 const mockCwd = '/path/to/current';
-const mockPackageJsonPaths = ['/path/to/package1'];
+const mockPackageJsonPaths = ['/path/to/package.json'];
 
 describe('getFramework', () => {
   beforeEach(() => {
@@ -27,12 +27,12 @@ describe('getFramework', () => {
       },
     };
 
-    mockFindPackageJsonPaths.mockReturnValue(mockPackageJsonPaths);
+    mockFindConfigFilesPaths.mockReturnValue(mockPackageJsonPaths);
     mockReadFileSync.mockReturnValue(JSON.stringify(mockAstroPackageJson));
 
     const result = getFramework();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCwd);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCwd);
     expect(mockReadFileSync).toHaveBeenCalledWith(
       mockPackageJsonPaths[0],
       'utf8',
@@ -50,12 +50,12 @@ describe('getFramework', () => {
       },
     };
 
-    mockFindPackageJsonPaths.mockReturnValue(mockPackageJsonPaths);
+    mockFindConfigFilesPaths.mockReturnValue(mockPackageJsonPaths);
     mockReadFileSync.mockReturnValue(JSON.stringify(mockNextPackageJson));
 
     const result = getFramework();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCwd);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCwd);
     expect(mockReadFileSync).toHaveBeenCalledWith(
       mockPackageJsonPaths[0],
       'utf8',
@@ -73,11 +73,11 @@ describe('getFramework', () => {
       },
     };
 
-    mockFindPackageJsonPaths.mockReturnValue(mockPackageJsonPaths);
+    mockFindConfigFilesPaths.mockReturnValue(mockPackageJsonPaths);
     mockReadFileSync.mockReturnValue(JSON.stringify(mockReactPackageJson));
     const result = getFramework();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCwd);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCwd);
     expect(mockReadFileSync).toHaveBeenCalledWith(
       mockPackageJsonPaths[0],
       'utf8',
@@ -93,7 +93,7 @@ describe('getFramework', () => {
 
     const result = getFramework();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCwd);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCwd);
     expect(result).toEqual({
       framework: 'unknown',
       frameworkVersion: 'unknown',

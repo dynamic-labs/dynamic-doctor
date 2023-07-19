@@ -1,7 +1,7 @@
 import { checkDynamicVersions } from '../../utils/checkDynamicVersions';
 import { checkForSdkUpdates } from '../../utils/checkForSdkUpdates';
 import { generateReport } from '../../utils/generateReport';
-import { getAllPackageJson } from '../../utils/getAllPackageJson';
+import { getAllConfigs } from '../../utils/getAllConfigs';
 import { getBasicData } from '../../utils/getBasicData';
 import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
@@ -11,7 +11,7 @@ import { startDynamicDoctor } from './startDynamicDoctor';
 jest.mock('../../utils/checkDynamicVersions');
 jest.mock('../../utils/checkForSdkUpdates');
 jest.mock('../../utils/generateReport');
-jest.mock('../../utils/getAllPackageJson');
+jest.mock('../../utils/getAllConfigs');
 jest.mock('../../utils/getBasicData');
 jest.mock('../../utils/isInProjectRoot');
 jest.mock('../../utils/loggers/DoctorLogger');
@@ -28,8 +28,8 @@ const mockCheckForSdkUpdates = checkForSdkUpdates as jest.MockedFunction<
 const mockGenerateReport = generateReport as jest.MockedFunction<
   typeof generateReport
 >;
-const mockGetAllPackageJson = getAllPackageJson as jest.MockedFunction<
-  typeof getAllPackageJson
+const mockGetAllConfigs = getAllConfigs as jest.MockedFunction<
+  typeof getAllConfigs
 >;
 const mockGetBasicData = getBasicData as jest.MockedFunction<
   typeof getBasicData
@@ -52,7 +52,7 @@ describe('startDynamicDoctor', () => {
     expect(mockCheckDynamicVersions).toHaveBeenCalled();
     expect(mockCheckForSdkUpdates).toHaveBeenCalled();
     expect(mockGetBasicData).toHaveBeenCalled();
-    expect(mockGetAllPackageJson).toHaveBeenCalled();
+    expect(mockGetAllConfigs).toHaveBeenCalled();
     expect(mockGenerateReport).toHaveBeenCalled();
     expect(DoctorLogger.error).not.toHaveBeenCalled();
   });
@@ -71,7 +71,7 @@ describe('startDynamicDoctor', () => {
     expect(mockCheckDynamicVersions).not.toHaveBeenCalled();
     expect(mockCheckForSdkUpdates).not.toHaveBeenCalled();
     expect(mockGetBasicData).not.toHaveBeenCalled();
-    expect(mockGetAllPackageJson).not.toHaveBeenCalled();
+    expect(mockGetAllConfigs).not.toHaveBeenCalled();
     expect(mockGenerateReport).not.toHaveBeenCalled();
   });
 });

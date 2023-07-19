@@ -1,21 +1,21 @@
 import { readFileSync } from 'fs';
 
-import { findPackageJsonPaths } from '../findPackageJsonPaths';
+import { findConfigFilesPaths } from '../findConfigFilesPaths';
 
-import { getAllPackageJson } from './getAllPackageJson';
-import { PackageJsonRow, getPackageJsonAsArray } from './helpers/getPackageJsonAsArray';
+import { getAllConfigs } from './getAllConfigs';
+import { ConfigFileRow, getConfigFileAsArray } from './helpers/getConfigFileAsArray';
 
 jest.mock('fs');
-jest.mock('../findPackageJsonPaths');
-jest.mock('./helpers/getPackageJsonAsArray');
+jest.mock('../findConfigFilesPaths');
+jest.mock('./helpers/getConfigFileAsArray');
 
-const mockFindPackageJsonPaths = findPackageJsonPaths as jest.Mock;
-const mockGetPackageJsonAsArray = getPackageJsonAsArray as jest.Mock;
+const mockFindConfigFilesPaths = findConfigFilesPaths as jest.Mock;
+const mockGetConfigFileAsArray = getConfigFileAsArray as jest.Mock;
 const mockReadFileSync = readFileSync as jest.Mock;
 
 const mockCurrentPath = '/path/to/current';
 
-describe('getAllPackageJson', () => {
+describe('getAllConfigs', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -28,14 +28,14 @@ describe('getAllPackageJson', () => {
       '{ "name": "package1", "version": "1.0.0" }',
       '{ "name": "package2", "version": "2.0.0" }',
     ];
-    const mockPackageJsonRows: PackageJsonRow[] = [
+    const mockConfigFileRows: ConfigFileRow[] = [
       { spaces: 0, text: '{' },
       { spaces: 2, text: '"name": "package1",' },
       { spaces: 2, text: '"version": "1.0.0"' },
       { spaces: 0, text: '}' },
     ];
 
-    mockFindPackageJsonPaths.mockReturnValue(mockPackageJsonPaths);
+    mockFindConfigFilesPaths.mockReturnValue(mockPackageJsonPaths);
     mockReadFileSync.mockImplementation((path: string) => {
       if (path === mockPackageJsonPaths[0]) {
         return mockPackageJsonContents[0];
@@ -44,11 +44,11 @@ describe('getAllPackageJson', () => {
       }
       return '';
     });
-    mockGetPackageJsonAsArray.mockReturnValue(mockPackageJsonRows);
+    mockGetConfigFileAsArray.mockReturnValue(mockConfigFileRows);
 
-    const result = getAllPackageJson();
+    const result = getAllConfigs();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCurrentPath);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCurrentPath);
     expect(mockReadFileSync).toHaveBeenCalledWith(
       mockPackageJsonPaths[0],
       'utf8',
@@ -57,30 +57,32 @@ describe('getAllPackageJson', () => {
       mockPackageJsonPaths[1],
       'utf8',
     );
-    expect(mockGetPackageJsonAsArray).toHaveBeenCalledWith(
+    expect(mockGetConfigFileAsArray).toHaveBeenCalledWith(
       mockPackageJsonContents[0],
+      mockPackageJsonPaths[0],
     );
-    expect(mockGetPackageJsonAsArray).toHaveBeenCalledWith(
+    expect(mockGetConfigFileAsArray).toHaveBeenCalledWith(
       mockPackageJsonContents[1],
+      mockPackageJsonPaths[1],
     );
     expect(result).toEqual([
       {
-        packageJson: mockPackageJsonRows,
+        configFile: mockConfigFileRows,
         path: mockPackageJsonPaths[0],
       },
       {
-        packageJson: mockPackageJsonRows,
+        configFile: mockConfigFileRows,
         path: mockPackageJsonPaths[1],
       },
     ]);
   });
 
   it('should return an empty array if no package.json paths are found', () => {
-    mockFindPackageJsonPaths.mockReturnValue([]);
+    mockFindConfigFilesPaths.mockReturnValue([]);
 
-    const result = getAllPackageJson();
+    const result = getAllConfigs();
 
-    expect(mockFindPackageJsonPaths).toHaveBeenCalledWith(mockCurrentPath);
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCurrentPath);
     expect(result).toEqual([]);
   });
 });

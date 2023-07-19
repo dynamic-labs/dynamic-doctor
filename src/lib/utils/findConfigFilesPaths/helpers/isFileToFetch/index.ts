@@ -1,0 +1,1 @@
+export { isFileToFetch } from './isFileToFetch';

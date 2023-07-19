@@ -7,7 +7,7 @@ import { BasicData } from '../getBasicData';
 import { generateReport } from './generateReport';
 import { formatBasicData } from './helpers/formatBasicData';
 import { createHtmlFile } from './helpers/createHtmlFile';
-import { PackageJson } from '../getAllPackageJson';
+import { ConfigFile } from '../getAllConfigs';
 
 jest.mock('path');
 jest.mock('pug');
@@ -41,7 +41,7 @@ describe('generateReport', () => {
       },
     };
 
-    const packageJsons: PackageJson[] = [];
+    const configFiles: ConfigFile[] = [];
 
     const mockTemplatePath = '/path/to/report.pug';
     mockPath.resolve.mockReturnValue(mockTemplatePath);
@@ -55,7 +55,7 @@ describe('generateReport', () => {
     const mockHtml = '<html>Mock HTML</html>';
     mockCompiledFile.mockReturnValue(mockHtml);
 
-    generateReport(basicData, packageJsons);
+    generateReport(basicData, configFiles);
 
     expect(mockPath.resolve).toHaveBeenCalledWith(
       expect.any(String),
@@ -65,7 +65,7 @@ describe('generateReport', () => {
     expect(mockFormatBasicData).toHaveBeenCalledWith(basicData);
     expect(mockCompiledFile).toHaveBeenCalledWith({
       basicData: mockFormattedBasicData,
-      packageJsons,
+      configFiles,
     });
     expect(createHtmlFile).toHaveBeenCalledWith(mockHtml);
   });

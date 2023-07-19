@@ -1,10 +1,10 @@
 import { DoctorLogger } from '../../../loggers/DoctorLogger';
 
-import { getPackageJsonAsArray } from './getPackageJsonAsArray';
+import { getConfigFileAsArray } from './getConfigFileAsArray';
 
 jest.mock('../../../loggers/DoctorLogger');
 
-describe('getPackageJsonAsArray', () => {
+describe('getConfigFileAsArray', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -23,7 +23,7 @@ describe('getPackageJsonAsArray', () => {
       }
     }`;
 
-    const result = getPackageJsonAsArray(mockPackageJson);
+    const result = getConfigFileAsArray(mockPackageJson, 'package.json');
 
     expect(result).toEqual([
       { spaces: 0, text: '{' },
@@ -46,7 +46,7 @@ describe('getPackageJsonAsArray', () => {
   it('should handle an empty package.json', () => {
     const mockPackageJson = '{}';
 
-    const result = getPackageJsonAsArray(mockPackageJson);
+    const result = getConfigFileAsArray(mockPackageJson, 'package.json');
 
     expect(result).toEqual([{ spaces: 0, text: '{}' }]);
 
@@ -57,12 +57,12 @@ describe('getPackageJsonAsArray', () => {
     const mockPackageJson =
       '{ "name": "example-package", "version": "1.0.0", }';
 
-    const result = getPackageJsonAsArray(mockPackageJson);
+    const result = getConfigFileAsArray(mockPackageJson, 'package.json');
 
     expect(result).toEqual([]);
 
     expect(DoctorLogger.error).toHaveBeenCalledWith(
-      'Error reading package.json file',
+      "Error reading config file, path: package.json.\nCaught error: SyntaxError: Unexpected token } in JSON at position 49",
     );
   });
 });

@@ -1,0 +1,1 @@
+export { findConfigFilesPaths } from './findConfigFilesPaths';
