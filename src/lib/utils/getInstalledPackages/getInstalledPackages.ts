@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 export const getInstalledPackages = (): any =>
   execSync('npm ls')
     .toString()
-    .split(/├──|└──/)
+    .split(/├──|└──|\+--|`--/)
     .slice(1)
     .map((i) => i.trim())
     .reduce((dependencies, line) => {
