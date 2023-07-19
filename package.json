@@ -1,8 +1,8 @@
 {
-  "name": "dynamic",
+  "name": "dynamic-doctor",
   "version": "0.0.1",
   "bin": {
-    "dynamic": "./dist/cjs/src/index.js"
+    "dynamic-doctor": "./dist/cjs/src/index.js"
   },
   "scripts": {
     "build": "rimraf dist && yarn build:cjs && yarn build:esm",
