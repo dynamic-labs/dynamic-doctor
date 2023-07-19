@@ -4,10 +4,12 @@ import { getInstalledPackages } from '../getInstalledPackages';
 
 import { checkForSdkUpdates } from './checkForSdkUpdates';
 import { getPackageManager } from "../getPackageManager";
+import fetch from 'node-fetch';
 
 jest.mock('../loggers/DoctorLogger');
 jest.mock('../getInstalledPackages');
 jest.mock('../getPackageManager');
+jest.mock('node-fetch');
 
 const mockError = jest.fn();
 const mockSuccess = jest.fn();
@@ -15,6 +17,7 @@ const mockWarning = jest.fn();
 
 const mockGetInstalledPackages = getInstalledPackages as jest.Mock;
 const mockGetPackageManager = getPackageManager as jest.Mock;
+const mockFetch = fetch as unknown as jest.Mock;
 
 describe('checkForSdkUpdates', () => {
   beforeEach(() => {
@@ -50,7 +53,7 @@ describe('checkForSdkUpdates', () => {
     });
 
     it('should return success if up to date', async () => {
-      jest.spyOn(global, 'fetch').mockImplementation(() =>
+      mockFetch.mockImplementation(() =>
         Promise.resolve({
           json: () => ({
             'dist-tags': {
@@ -68,7 +71,7 @@ describe('checkForSdkUpdates', () => {
     });
 
     it('should return warning if out of date', async () => {
-      jest.spyOn(global, 'fetch').mockImplementation(() =>
+      mockFetch.mockImplementation(() =>
         Promise.resolve({
           json: () => ({
             'dist-tags': {
@@ -98,7 +101,7 @@ describe('checkForSdkUpdates', () => {
     });
 
     it('should return success if up to date', async () => {
-      jest.spyOn(global, 'fetch').mockImplementation(() =>
+      mockFetch.mockImplementation(() =>
         Promise.resolve({
           json: () => ({
             'dist-tags': {
@@ -116,7 +119,7 @@ describe('checkForSdkUpdates', () => {
     });
 
     it('should return warning if out of date', async () => {
-      jest.spyOn(global, 'fetch').mockImplementation(() =>
+      mockFetch.mockImplementation(() =>
         Promise.resolve({
           json: () => ({
             'dist-tags': {

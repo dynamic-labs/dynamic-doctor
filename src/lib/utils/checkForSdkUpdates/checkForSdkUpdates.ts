@@ -3,10 +3,11 @@ import { getInstalledPackages } from '../getInstalledPackages';
 import { getPackageManager } from '../getPackageManager';
 import { DoctorLogger } from '../loggers/DoctorLogger';
 import {sdkVsSdkCoreDocsUrl} from '../../static/urls';
+import fetch from 'node-fetch';
 
 const fetchLatestVersion = async (packageName: string) => {
   const response = await fetch(`https://registry.npmjs.org/${packageName}`);
-  const json = await response.json();
+  const json: any = await response.json();
   return json['dist-tags'].latest;
 };
 
