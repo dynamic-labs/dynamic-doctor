@@ -1,6 +1,6 @@
 # Dynamic-Doctor 💉
 
-
+![Team Doctor 💉](https://github.com/dynamic-labs/DynamicDoctor/assets/107057105/f315c93c-2d75-424f-8436-d19a960f5d53)
 
 ## Use case
 You can use this package to verify your Dynamic SDK setup and generate report which can be reviewed by Dynamic Team. 
