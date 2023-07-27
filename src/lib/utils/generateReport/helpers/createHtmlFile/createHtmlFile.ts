@@ -6,7 +6,7 @@ import { DoctorLogger } from '../../../loggers/DoctorLogger';
 export const createHtmlFile = (html: string) => {
   const outputFilePath = path.resolve(
     process.cwd(),
-    `dynamic-DoctorLogger-${new Date().getTime()}.html`,
+    `dynamic-doctor-report-${new Date().getTime()}.html`,
   );
 
   writeFile(outputFilePath, html, (err) => {
