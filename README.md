@@ -1,11 +1,17 @@
-# doctor
+# Dynamic-Doctor 💉
 
-This library was generated with [Nx](https://nx.dev).
 
+
+## Use case
+You can use this package to verify your Dynamic SDK setup and generate report which can be reviewed by Dynamic Team. 
 ## Building
 
-Run `nx build doctor` to build the library.
+1. Install dependencies `yarn` 
+2. Run `yarn build`
+3. Next pack local library `yarn pack` 
+4. Install package `npm i -g dynamic-doctor-v0.0.1.tgz`
 
-## Running unit tests
+That's your setup!
 
-Run `nx test doctor` to execute the unit tests via [Jest](https://jestjs.io).
+Now you can go to the directory you want to check and simply run `dynamic-doctor run`. 
+
