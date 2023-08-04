@@ -2,10 +2,12 @@ import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import { isFileToFetch } from './helpers/isFileToFetch';
 
-const pathsToIgnore = ['node_modules', 'dist', 'coverage', 'build'];
+const pathsToIgnore = ['node_modules', 'dist', 'coverage', 'build', '.next'];
 
 export const findConfigFilesPaths = (directory: string): string[] => {
   const configFilesPaths: string[] = [];
+
+  const projectRoot = process.cwd();
 
   const traverseDirectory = (currentPath: string): void => {
     const files = readdirSync(currentPath);
@@ -19,7 +21,7 @@ export const findConfigFilesPaths = (directory: string): string[] => {
         if (fileStats.isDirectory()) {
           traverseDirectory(filePath); // Recursively traverse subdirectories
         } else if (isFileToFetch(file)) {
-          configFilesPaths.push(filePath);
+          configFilesPaths.push(filePath.replace(projectRoot, '.'));
         }
       }
     }
