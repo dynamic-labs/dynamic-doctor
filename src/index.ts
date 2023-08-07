@@ -1,12 +1,18 @@
-#! /usr/bin/env node
 import { Command } from 'commander';
 
 import { doctorCommand } from './lib/commands/doctor';
 
-const program = new Command();
+export class DynamicCLI {
 
-program.name('Dynamic CLI');
+  program: Command;
 
-program.addCommand(doctorCommand());
+  constructor() {
+    this.program = new Command();
+    this.program.name('Dynamic CLI');
+    this.program.addCommand(doctorCommand());
+  }
 
-program.parse(process.argv);
+  run() {
+    this.program.parse(process.argv);
+  }
+}

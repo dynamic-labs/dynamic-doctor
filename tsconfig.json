@@ -18,9 +18,9 @@
     "strict": true,
     "sourceMap": true,
     "target": "ES2020",
-    "typeRoots": ["./node_modules/@types", "./src/wallet-book"],
+    "typeRoots": ["./node_modules/@types"],
     "module": "commonjs"
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "bin/index.ts"]
 }

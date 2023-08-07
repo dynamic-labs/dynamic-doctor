@@ -1,8 +1,9 @@
 {
   "name": "dynamic-doctor",
   "version": "0.0.1",
+  "license": "MIT",
   "bin": {
-    "dynamic-doctor": "./dist/cjs/src/index.js"
+    "dynamic-doctor": "./dist/cjs/bin/index.js"
   },
   "scripts": {
     "build": "rimraf dist && yarn build:cjs && yarn build:esm",
