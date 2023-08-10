@@ -33,6 +33,10 @@ export class IssueCollector {
 
       DoctorLogger.warning(`${realIndex}.`, issue.message);
     });
+
+    DoctorLogger.info(
+      'Please fix the known issues above if the issues remain, please share the generated report with the Dynamic team.',
+    );
   }
 
   private sortIssues() {
