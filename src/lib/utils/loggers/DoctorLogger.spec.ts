@@ -16,9 +16,7 @@ describe('DoctorLogger', () => {
     DoctorLogger.info(mockMessage);
 
     expect(console.log).toHaveBeenCalledWith(
-      chalk.bgYellow.black('[DynamicDoctor - Info]'),
       mockMessage,
-      '\n',
     );
   });
 
@@ -28,9 +26,7 @@ describe('DoctorLogger', () => {
     DoctorLogger.error(mockMessage);
 
     expect(console.error).toHaveBeenCalledWith(
-      chalk.bgRed.black('[DynamicDoctor - Error]'),
-      mockMessage,
-      '\n',
+      chalk.red(mockMessage),
     );
   });
 
@@ -40,9 +36,7 @@ describe('DoctorLogger', () => {
     DoctorLogger.success(mockMessage);
 
     expect(console.log).toHaveBeenCalledWith(
-      chalk.bgGreen.black('[DynamicDoctor - Success]'),
-      mockMessage,
-      '\n',
+      chalk.green(mockMessage),
     );
   });
 
@@ -52,9 +46,29 @@ describe('DoctorLogger', () => {
     DoctorLogger.warning(mockMessage);
 
     expect(console.log).toHaveBeenCalledWith(
-      chalk.bgYellow.black('[DynamicDoctor - Warning]'),
-      mockMessage,
-      '\n',
+      chalk.yellow(mockMessage),
+    );
+  });
+
+  it('should log the dashed line correctly when there is no process variable', () => {
+    const mockProcessColumns = 80;
+    const mockDashedLine = '─'.repeat(mockProcessColumns);
+
+    DoctorLogger.dashedLine();
+
+    expect(console.log).toHaveBeenCalledWith(
+      mockDashedLine,
+    );
+  });
+
+  it('should log the dashed line correctly when there is no process variable', () => {
+    process.stdout.columns = 100;
+    const mockDashedLine = '─'.repeat(100);
+
+    DoctorLogger.dashedLine();
+
+    expect(console.log).toHaveBeenCalledWith(
+      mockDashedLine,
     );
   });
 });

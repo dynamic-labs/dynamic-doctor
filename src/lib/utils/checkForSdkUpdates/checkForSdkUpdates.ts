@@ -1,9 +1,10 @@
+import fetch from 'node-fetch';
 import { getInstallCommand } from '../getInstallCommand';
 import { getInstalledPackages } from '../getInstalledPackages';
 import { getPackageManager } from '../getPackageManager';
 import { DoctorLogger } from '../loggers/DoctorLogger';
-import {sdkVsSdkCoreDocsUrl} from '../../static/urls';
-import fetch from 'node-fetch';
+import { sdkVsSdkCoreDocsUrl } from '../../static/urls';
+import { IssueCollector } from '../issueCollector/IssueCollector';
 
 const fetchLatestVersion = async (packageName: string) => {
   const response = await fetch(`https://registry.npmjs.org/${packageName}`);
@@ -25,22 +26,24 @@ const isSdkDuplicated = (packages: any) => {
   return !!(packages['@dynamic-labs/sdk-react'] && packages['@dynamic-labs/sdk-react-core']);
 }
 
-export const checkForSdkUpdates = async () => {
+export const checkForSdkUpdates = async (issueCollector: IssueCollector) => {
   const packages = getInstalledPackages();
 
   if (isSdkDuplicated(packages)) {
-    DoctorLogger.error(
-      `You have both @dynamic-labs/sdk-react and @dynamic-labs/sdk-react-core installed. Please remove one of them. Check the difference here: ${sdkVsSdkCoreDocsUrl}`,
-    );
+    issueCollector.addIssue({
+      type: 'error',
+      message: `You have both @dynamic-labs/sdk-react and @dynamic-labs/sdk-react-core installed. Please remove one of them. Check the difference here: ${sdkVsSdkCoreDocsUrl}`,
+    });
     return;
   }
 
 
   const whichSdk = checkWhichSdkIsUsed(packages);
   if (!whichSdk) {
-    DoctorLogger.error(
-      "No Dynamic SDK found in package.json. We can't check for updates",
-    );
+    issueCollector.addIssue({
+      type: 'error',
+      message: `No Dynamic SDK found in package.json. We can't check for updates.`,
+    });
     return;
   }
 
@@ -57,9 +60,10 @@ export const checkForSdkUpdates = async () => {
 
   const packageManager = getPackageManager();
   const installCommand = getInstallCommand(packageManager.packageManager);
+  issueCollector.addIssue({
+    type: 'warning',
+    message:  `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
+  });
 
-  DoctorLogger.warning(
-    `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
-  );
   return;
 };

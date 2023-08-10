@@ -8,7 +8,7 @@ import { ConfigFile } from '../getAllConfigs';
 import { formatBasicData } from './helpers/formatBasicData';
 import { createHtmlFile } from './helpers/createHtmlFile';
 
-export const generateReport = (
+export const generateReport = async (
   basicData: BasicData,
   configFiles: ConfigFile[],
 ) => {
@@ -20,5 +20,5 @@ export const generateReport = (
     configFiles,
   });
 
-  createHtmlFile(html);
+  await createHtmlFile(html);
 };

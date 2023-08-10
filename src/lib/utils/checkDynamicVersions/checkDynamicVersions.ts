@@ -1,16 +1,14 @@
-import chalk from 'chalk';
-
 import { getPackageManager } from '../getPackageManager';
-import { DoctorLogger } from '../loggers/DoctorLogger';
 import { getInstalledPackages } from '../getInstalledPackages';
 import { getInstallCommand } from '../getInstallCommand';
+import { IssueCollector } from '../issueCollector/IssueCollector';
 
 const basePackages = [
   '@dynamic-labs/sdk-react',
   '@dynamic-labs/sdk-react-core',
 ];
 
-export const checkDynamicVersions = (): void => {
+export const checkDynamicVersions = (issueCollector: IssueCollector): void => {
   const packages = getInstalledPackages();
 
   const baseSdkReactVersion =
@@ -57,14 +55,11 @@ export const checkDynamicVersions = (): void => {
 
   const installCommand = getInstallCommand(packageManager.packageManager);
 
-  DoctorLogger.warning(
-    chalk.yellow(`
-The Following packages must use the same version as @dynamic-labs/sdk-react
-
-Update the following
+  issueCollector.addIssue({
+    type: 'error',
+    message: `The Following packages must use the same version as @dynamic-labs/sdk-react.\nUpdate the following
 ${installCommand} ${Object.keys(dynamicPackagesOutWithWrongVersion).map(
-      (packageName) => [packageName, baseSdkReactVersion].join('@'),
-    )}
-  `),
-  );
+  (packageName) => [packageName, baseSdkReactVersion].join('@'),
+)}`
+  });
 };

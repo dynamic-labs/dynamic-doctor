@@ -1,16 +1,14 @@
-import chalk from 'chalk';
-
 import { getPackageManager } from '../getPackageManager';
-import { DoctorLogger } from '../loggers/DoctorLogger';
 import { getInstalledPackages } from '../getInstalledPackages';
 import { getInstallCommand } from '../getInstallCommand';
+import { IssueCollector } from '../issueCollector/IssueCollector';
 
 import { checkDynamicVersions } from './checkDynamicVersions';
 
 jest.mock('../getPackageManager');
 jest.mock('../getInstalledPackages');
 jest.mock('../getInstallCommand');
-jest.mock('../loggers/DoctorLogger');
+jest.mock('../issueCollector/IssueCollector');
 
 const mockGetInstalledPackages = getInstalledPackages as jest.MockedFunction<
   typeof getInstalledPackages
@@ -22,28 +20,26 @@ const mockGetInstallCommand = getInstallCommand as jest.MockedFunction<
   typeof getInstallCommand
 >;
 
+const issueCollector = new IssueCollector();
+
 describe('checkDynamicVersions', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should return early if all packages are in sync', () => {
-    // Arrange
     const packages = {
       '@dynamic-labs/sdk-react': '1.0.0',
       '@dynamic-labs/sdk-react-core': '1.0.0',
     };
     mockGetInstalledPackages.mockReturnValue(packages);
 
-    // Act
-    checkDynamicVersions();
+    checkDynamicVersions(issueCollector);
 
-    // Assert
-    expect(DoctorLogger.warning).not.toHaveBeenCalled();
+    expect(issueCollector.addIssue).not.toHaveBeenCalled();
   });
 
   it('should log warning with correct packages and versions if packages are not in sync', () => {
-    // Arrange
     const packages = {
       '@dynamic-labs/sdk-react': '1.0.0',
       '@dynamic-labs/sdk-react-core': '1.0.0',
@@ -59,19 +55,14 @@ describe('checkDynamicVersions', () => {
 
     mockGetInstallCommand.mockReturnValue('npm install');
 
-    const expectedWarningMessage = `
-The Following packages must use the same version as @dynamic-labs/sdk-react
+    const expectedWarningMessage = `The Following packages must use the same version as @dynamic-labs/sdk-react.\nUpdate the following
+npm install other-package-1@1.0.0,other-package-2@1.0.0`;
 
-Update the following
-npm install other-package-1@1.0.0,other-package-2@1.0.0
-  `;
+    checkDynamicVersions(issueCollector);
 
-    // Act
-    checkDynamicVersions();
-
-    // Assert
-    expect(DoctorLogger.warning).toHaveBeenCalledWith(
-      chalk.yellow(expectedWarningMessage),
-    );
+    expect(issueCollector.addIssue).toHaveBeenCalledWith({
+      type: 'error',
+      message: expectedWarningMessage,
+    });
   });
 });

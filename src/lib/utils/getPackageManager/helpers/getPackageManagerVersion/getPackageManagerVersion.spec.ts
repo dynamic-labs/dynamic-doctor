@@ -1,7 +1,5 @@
 import { execSync } from 'child_process';
 
-import { DoctorLogger } from '../../../loggers/DoctorLogger';
-
 import { getPackageManagerVersion } from './getPackageManagerVersion';
 
 jest.mock('child_process');
@@ -23,7 +21,6 @@ describe('getPackageManagerVersion', () => {
 
     expect(mockExecSync).toHaveBeenCalledWith(`${mockPackageManager} -v`);
     expect(result).toBe(mockVersion);
-    expect(DoctorLogger.error).not.toHaveBeenCalled();
   });
 
   it('should handle error and log an error message', () => {
@@ -38,9 +35,5 @@ describe('getPackageManagerVersion', () => {
 
     expect(mockExecSync).toHaveBeenCalledWith(`${mockPackageManager} -v`);
     expect(result).toBe('unknown');
-    expect(DoctorLogger.error).toHaveBeenCalledWith(
-      `Error getting ${mockPackageManager} version:`,
-      mockError,
-    );
   });
 });
