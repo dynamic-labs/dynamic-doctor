@@ -8,7 +8,7 @@ export class DynamicCLI {
 
   constructor() {
     this.program = new Command();
-    this.program.name('Dynamic CLI');
+    this.program.name('dynamic-doctor');
     this.program.addCommand(doctorCommand());
   }
 
