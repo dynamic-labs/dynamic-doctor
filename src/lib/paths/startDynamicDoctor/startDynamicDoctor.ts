@@ -1,3 +1,5 @@
+import { prompt } from 'enquirer';
+
 import { checkDynamicVersions } from '../../utils/checkDynamicVersions';
 import { checkForSdkUpdates } from '../../utils/checkForSdkUpdates';
 import { generateReport } from '../../utils/generateReport';
@@ -6,14 +8,25 @@ import { getBasicData } from '../../utils/getBasicData';
 import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
 
-export const startDynamicDoctor = () => {
-  DoctorLogger.info(
-    'Please make sure you are running this command in the project root directory.',
-  );
+export const startDynamicDoctor = async () => {
+  const { confirm } = await prompt<{ confirm: boolean }>({
+    type: 'confirm',
+    name: 'confirm',
+    message: 'Please make sure you are running this command in the project root directory.\nContinue?',
+  });
+
+  if (!confirm) {
+    DoctorLogger.info('Aborting dynamic doctor.');
+    return;
+  }
+
 
   if (isInProjectRoot()) {
+    DoctorLogger.dashedLine();
+    
     checkDynamicVersions();
-    checkForSdkUpdates();
+    await checkForSdkUpdates();
+
     const basicData = getBasicData();
     const packageJsons = getAllConfigs();
 

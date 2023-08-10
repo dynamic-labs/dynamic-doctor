@@ -14,9 +14,11 @@ export const createHtmlFile = (html: string) => {
       DoctorLogger.error('Error creating HTML file');
     } else {
       DoctorLogger.success(
-        'Report file created successfully, please send it to us on our slack channel. Here is the path:',
+        'Report file created successfully, please send it to us on our slack channel.\nHere is the path:',
         outputFilePath,
       );
+
+      DoctorLogger.warning('*** Please make sure that there are no sensitive information in the file before sharing it ****')
     }
   });
 };

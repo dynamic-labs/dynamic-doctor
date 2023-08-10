@@ -2,35 +2,36 @@
 import chalk from 'chalk';
 
 export class DoctorLogger {
-  public static log(...args: any[]) {
-    console.log(
-      chalk.bgYellowBright.black('[DynamicDoctor - Log]'),
-      ...args,
-      '\n',
-    );
-  }
-
   public static info(...args: any[]) {
-    console.log(chalk.bgYellow.black('[DynamicDoctor - Info]'), ...args, '\n');
+    console.log(...args, '\n');
   }
 
   public static error(...args: any[]) {
-    console.error(chalk.bgRed.black('[DynamicDoctor - Error]'), ...args, '\n');
+    console.error(chalk.red( ...args), '\n');
   }
 
   public static success(...args: any[]) {
     console.log(
-      chalk.bgGreen.black('[DynamicDoctor - Success]'),
-      ...args,
+      chalk.green(...args),
       '\n',
     );
   }
 
   public static warning(...args: any[]) {
     console.log(
-      chalk.bgYellow.black('[DynamicDoctor - Warning]'),
-      ...args,
+      chalk.yellow(...args),
       '\n',
     );
+  }
+
+  public static dashedLine() {
+    const processColumns = process.stdout.columns;
+    let columns: number = processColumns;
+    if (!processColumns || processColumns <= 1) {
+      columns = 80; // Default to 80 columns if no process columns are available
+    }
+    
+    console.log(''); // One line break
+    console.log(('─').repeat(columns));
   }
 }

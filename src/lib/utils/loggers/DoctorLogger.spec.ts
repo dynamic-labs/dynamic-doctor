@@ -10,18 +10,6 @@ describe('DoctorLogger', () => {
     jest.clearAllMocks();
   });
 
-  it('should log the message correctly', () => {
-    const mockMessage = 'Log message';
-
-    DoctorLogger.log(mockMessage);
-
-    expect(console.log).toHaveBeenCalledWith(
-      chalk.bgYellowBright.black('[DynamicDoctor - Log]'),
-      mockMessage,
-      '\n',
-    );
-  });
-
   it('should log the info message correctly', () => {
     const mockMessage = 'Info message';
 

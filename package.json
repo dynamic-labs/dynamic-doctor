@@ -16,6 +16,7 @@
   "dependencies": {
     "chalk": "4.1.2",
     "commander": "^10.0.1",
+    "enquirer": "^2.4.1",
     "node-fetch": "2.6.12",
     "pug": "^3.0.2"
   },
