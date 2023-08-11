@@ -2,7 +2,10 @@ import { readFileSync } from 'fs';
 
 import { findConfigFilesPaths } from '../findConfigFilesPaths';
 
-import { ConfigFileRow, getConfigFileAsArray } from './helpers/getConfigFileAsArray';
+import {
+  ConfigFileRow,
+  getConfigFileAsArray,
+} from './helpers/getConfigFileAsArray';
 
 export type ConfigFile = {
   configFile: ConfigFileRow[];

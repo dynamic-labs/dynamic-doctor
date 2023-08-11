@@ -1,10 +1,9 @@
-import { DoctorLogger } from "../loggers/DoctorLogger";
+import { DoctorLogger } from '../loggers/DoctorLogger';
 
 type Issue = {
   type: 'error' | 'warning';
   message: string;
 };
-
 
 export class IssueCollector {
   issues: Issue[] = [];

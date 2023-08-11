@@ -8,7 +8,7 @@ export class DoctorLogger {
   }
 
   public static error(...args: any[]) {
-    console.error(chalk.red( ...args));
+    console.error(chalk.red(...args));
     this.newLine();
   }
 
@@ -19,7 +19,7 @@ export class DoctorLogger {
 
   public static warning(...args: any[]) {
     console.log(chalk.yellow(...args));
-    this.newLine();
+    this.newLine()
   }
 
   public static dashedLine() {
@@ -28,9 +28,9 @@ export class DoctorLogger {
     if (!processColumns || processColumns <= 1) {
       columns = 80; // Default to 80 columns if no process columns are available
     }
-    
+
     this.newLine();
-    console.log(('─').repeat(columns));
+    console.log('─'.repeat(columns));
     this.newLine();
   }
 

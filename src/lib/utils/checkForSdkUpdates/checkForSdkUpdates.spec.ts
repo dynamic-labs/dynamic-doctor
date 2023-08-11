@@ -1,10 +1,9 @@
-
 import fetch from 'node-fetch';
 
 import { DoctorLogger } from '../loggers/DoctorLogger';
 import { getInstalledPackages } from '../getInstalledPackages';
 import { checkForSdkUpdates } from './checkForSdkUpdates';
-import { getPackageManager } from "../getPackageManager";
+import { getPackageManager } from '../getPackageManager';
 import { IssueCollector } from '../issueCollector/IssueCollector';
 
 jest.mock('../loggers/DoctorLogger');
@@ -42,8 +41,8 @@ describe('checkForSdkUpdates', () => {
     await checkForSdkUpdates(issueCollector);
 
     expect(issueCollector.addIssue).toHaveBeenCalledWith({
-        type: 'error',
-        message: `No Dynamic SDK found in package.json. We can't check for updates.`,
+      type: 'error',
+      message: `No Dynamic SDK found in package.json. We can't check for updates.`,
     });
   });
 
@@ -91,7 +90,8 @@ describe('checkForSdkUpdates', () => {
 
       expect(issueCollector.addIssue).toHaveBeenCalledWith({
         type: 'warning',
-        message: 'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react@latest',
+        message:
+          'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react@latest',
       });
     });
   });
@@ -140,7 +140,8 @@ describe('checkForSdkUpdates', () => {
 
       expect(issueCollector.addIssue).toHaveBeenCalledWith({
         type: 'warning',
-        message: 'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest',
+        message:
+          'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest',
       });
     });
   });

@@ -13,9 +13,10 @@ export const startDynamicDoctor = async () => {
   const { confirm } = await prompt<{ confirm: boolean }>({
     type: 'confirm',
     name: 'confirm',
-    message: 'Please make sure you are running this command in the project root directory.\n  Continue?', // two spaces before 'Continue' to align with the 'Please'
+    message:
+      'Please make sure you are running this command in the project root directory.\n  Continue?', // two spaces before 'Continue' to align with the 'Please'
   });
-  
+
   if (!confirm) {
     DoctorLogger.newLine();
     DoctorLogger.info('Aborting dynamic doctor.');

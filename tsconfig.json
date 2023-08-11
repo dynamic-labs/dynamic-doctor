@@ -18,7 +18,6 @@
     "strict": true,
     "sourceMap": true,
     "target": "ES2020",
-    "typeRoots": ["./node_modules/@types"],
     "module": "commonjs"
   },
   "exclude": ["node_modules", "dist"],

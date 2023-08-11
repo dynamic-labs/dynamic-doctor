@@ -16,7 +16,7 @@ describe('getPlatform', () => {
         uv: '',
         zlib: '',
         modules: '',
-        openssl: ''
+        openssl: '',
       },
       arch: mockCpuArch,
       platform: mockPlatform,

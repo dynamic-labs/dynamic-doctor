@@ -59,7 +59,7 @@ export const checkDynamicVersions = (issueCollector: IssueCollector): void => {
     type: 'error',
     message: `The Following packages must use the same version as @dynamic-labs/sdk-react.\nUpdate the following
 ${installCommand} ${Object.keys(dynamicPackagesOutWithWrongVersion).map(
-  (packageName) => [packageName, baseSdkReactVersion].join('@'),
-)}`
+      (packageName) => [packageName, baseSdkReactVersion].join('@'),
+    )}`,
   });
 };

@@ -1,1 +1,1 @@
-export {extractPackageJsonPaths} from './extractPackageJsonPaths';
+export { extractPackageJsonPaths } from './extractPackageJsonPaths';
