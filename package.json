@@ -14,6 +14,13 @@
   "bin": {
     "dynamic-doctor": "./dist/cjs/bin/index.js"
   },
+  "keywords": [
+    "dynamic",
+    "typescript",
+    "cli",
+    "doctor",
+    "dynamic-labs"
+  ],
   "scripts": {
     "build": "rimraf dist && yarn build:cjs && yarn build:esm",
     "build:cjs": "rimraf dist/cjs && tsc -p tsconfig.cjs.json && yarn copy:templates:cjs",
