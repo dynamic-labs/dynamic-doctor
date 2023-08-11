@@ -1,17 +1,17 @@
 const filesToFetch = [
   {
     name: 'package.json',
-    type: 'file'
+    type: 'file',
   },
   {
     name: 'tsconfig',
     type: 'pattern',
-    regex: /tsconfig(\..*)?\.json/
+    regex: /tsconfig(\..*)?\.json/,
   },
   {
     name: 'jsconfig',
     type: 'pattern',
-    regex: /jsconfig(\..*)?\.json/
+    regex: /jsconfig(\..*)?\.json/,
   },
 ];
 
@@ -27,4 +27,4 @@ export const isFileToFetch = (file: string): boolean => {
 
     return false;
   });
-}
+};

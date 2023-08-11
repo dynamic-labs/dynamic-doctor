@@ -3,7 +3,6 @@ import { Command } from 'commander';
 import { doctorCommand } from './lib/commands/doctor';
 
 export class DynamicCLI {
-
   program: Command;
 
   constructor() {

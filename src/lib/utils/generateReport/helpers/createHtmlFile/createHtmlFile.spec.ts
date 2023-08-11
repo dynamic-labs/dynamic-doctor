@@ -28,10 +28,7 @@ describe('createHtmlFile', () => {
       process.cwd(),
       expect.any(String),
     );
-    expect(mockedWriteFile).toHaveBeenCalledWith(
-      mockOutputFilePath,
-      mockHtml,
-    );
+    expect(mockedWriteFile).toHaveBeenCalledWith(mockOutputFilePath, mockHtml);
 
     expect(DoctorLogger.success).toHaveBeenCalledWith(
       'Report file created successfully, please send it to us on our slack channel.\nHere is the path:',
@@ -51,10 +48,7 @@ describe('createHtmlFile', () => {
       expect.any(String),
     );
 
-    expect(mockedWriteFile).toHaveBeenCalledWith(
-      mockOutputFilePath,
-      mockHtml,
-    );
+    expect(mockedWriteFile).toHaveBeenCalledWith(mockOutputFilePath, mockHtml);
 
     expect(DoctorLogger.error).toHaveBeenCalledWith('Error creating HTML file');
   });

@@ -10,19 +10,18 @@ const countSpaces = (line: string): number => {
   return match ? match[0].length : 0;
 };
 
-export const getConfigFileAsArray = (configFile: string, path: string): ConfigFileRow[] => {
+export const getConfigFileAsArray = (
+  configFile: string,
+  path: string,
+): ConfigFileRow[] => {
   try {
-    const formattedConfigFile = JSON.stringify(
-      JSON.parse(configFile),
-      null,
-      2,
-    );
+    const formattedConfigFile = JSON.stringify(JSON.parse(configFile), null, 2);
 
     return formattedConfigFile.split('\n').map((line) => {
       return {
         spaces: countSpaces(line),
         text: line.trim(),
-      }
+      };
     });
   } catch (error) {
     DoctorLogger.error(`Error reading config file, path: ${path}.

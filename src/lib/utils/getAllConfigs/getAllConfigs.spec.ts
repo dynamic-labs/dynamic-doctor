@@ -3,7 +3,10 @@ import { readFileSync } from 'fs';
 import { findConfigFilesPaths } from '../findConfigFilesPaths';
 
 import { getAllConfigs } from './getAllConfigs';
-import { ConfigFileRow, getConfigFileAsArray } from './helpers/getConfigFileAsArray';
+import {
+  ConfigFileRow,
+  getConfigFileAsArray,
+} from './helpers/getConfigFileAsArray';
 
 jest.mock('fs');
 jest.mock('../findConfigFilesPaths');

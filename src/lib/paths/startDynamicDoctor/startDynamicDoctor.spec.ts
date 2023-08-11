@@ -18,9 +18,8 @@ jest.mock('../../utils/isInProjectRoot');
 jest.mock('../../utils/loggers/DoctorLogger');
 jest.mock('../../utils/issueCollector/IssueCollector');
 jest.mock('enquirer', () => ({
-  prompt: jest.fn().mockReturnValue({ confirm: true })
-  })
-);
+  prompt: jest.fn().mockReturnValue({ confirm: true }),
+}));
 
 const mockIsInProjectRoot = isInProjectRoot as jest.MockedFunction<
   typeof isInProjectRoot
@@ -84,7 +83,7 @@ describe('startDynamicDoctor', () => {
     await expect(startDynamicDoctor()).rejects.toThrow(
       'User is not in a project root directory.',
     );
-    
+
     expect(DoctorLogger.error).toHaveBeenCalledWith(
       'You are not in a project root directory.',
     );

@@ -15,9 +15,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.info(mockMessage);
 
-    expect(console.log).toHaveBeenCalledWith(
-      mockMessage,
-    );
+    expect(console.log).toHaveBeenCalledWith(mockMessage);
   });
 
   it('should log the error message correctly', () => {
@@ -25,9 +23,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.error(mockMessage);
 
-    expect(console.error).toHaveBeenCalledWith(
-      chalk.red(mockMessage),
-    );
+    expect(console.error).toHaveBeenCalledWith(chalk.red(mockMessage));
   });
 
   it('should log the success message correctly', () => {
@@ -35,9 +31,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.success(mockMessage);
 
-    expect(console.log).toHaveBeenCalledWith(
-      chalk.green(mockMessage),
-    );
+    expect(console.log).toHaveBeenCalledWith(chalk.green(mockMessage));
   });
 
   it('should log the warning message correctly', () => {
@@ -45,9 +39,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.warning(mockMessage);
 
-    expect(console.log).toHaveBeenCalledWith(
-      chalk.yellow(mockMessage),
-    );
+    expect(console.log).toHaveBeenCalledWith(chalk.yellow(mockMessage));
   });
 
   it('should log the dashed line correctly when there is no process variable', () => {
@@ -56,9 +48,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.dashedLine();
 
-    expect(console.log).toHaveBeenCalledWith(
-      mockDashedLine,
-    );
+    expect(console.log).toHaveBeenCalledWith(mockDashedLine);
   });
 
   it('should log the dashed line correctly when there is no process variable', () => {
@@ -67,8 +57,6 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.dashedLine();
 
-    expect(console.log).toHaveBeenCalledWith(
-      mockDashedLine,
-    );
+    expect(console.log).toHaveBeenCalledWith(mockDashedLine);
   });
 });

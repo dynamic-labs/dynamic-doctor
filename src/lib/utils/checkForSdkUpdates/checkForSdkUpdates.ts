@@ -20,11 +20,14 @@ const checkWhichSdkIsUsed = (packages: any) => {
     return '@dynamic-labs/sdk-react-core';
   }
   return null;
-}
+};
 
 const isSdkDuplicated = (packages: any) => {
-  return !!(packages['@dynamic-labs/sdk-react'] && packages['@dynamic-labs/sdk-react-core']);
-}
+  return !!(
+    packages['@dynamic-labs/sdk-react'] &&
+    packages['@dynamic-labs/sdk-react-core']
+  );
+};
 
 export const checkForSdkUpdates = async (issueCollector: IssueCollector) => {
   const packages = getInstalledPackages();
@@ -36,7 +39,6 @@ export const checkForSdkUpdates = async (issueCollector: IssueCollector) => {
     });
     return;
   }
-
 
   const whichSdk = checkWhichSdkIsUsed(packages);
   if (!whichSdk) {
@@ -62,7 +64,7 @@ export const checkForSdkUpdates = async (issueCollector: IssueCollector) => {
   const installCommand = getInstallCommand(packageManager.packageManager);
   issueCollector.addIssue({
     type: 'warning',
-    message:  `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
+    message: `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
   });
 
   return;

@@ -62,7 +62,7 @@ describe('getConfigFileAsArray', () => {
     expect(result).toEqual([]);
 
     expect(DoctorLogger.error).toHaveBeenCalledWith(
-      "Error reading config file, path: package.json.\nCaught error: SyntaxError: Unexpected token } in JSON at position 49",
+      'Error reading config file, path: package.json.\nCaught error: SyntaxError: Unexpected token } in JSON at position 49',
     );
   });
 });
