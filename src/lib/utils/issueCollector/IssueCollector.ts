@@ -28,6 +28,7 @@ export class IssueCollector {
 
       if (issue.type === 'error') {
         DoctorLogger.error(`${realIndex}.`, issue.message);
+        return;
       }
 
       DoctorLogger.warning(`${realIndex}.`, issue.message);
