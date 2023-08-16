@@ -25,6 +25,7 @@
     "build": "rimraf dist && yarn build:cjs && yarn build:esm",
     "build:cjs": "rimraf dist/cjs && tsc -p tsconfig.cjs.json && yarn copy:templates:cjs",
     "build:esm": "rimraf dist/esm && tsc -p tsconfig.esm.json && yarn copy:templates:esm",
+    "lint": "eslint .",
     "copy:templates:cjs": "cp -r ./src/templates ./dist/cjs/src/templates",
     "copy:templates:esm": "cp -r ./src/templates ./dist/esm/src/templates",
     "test": "jest"
@@ -37,6 +38,7 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
+    "@actions/core": "1.10.0",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
     "@types/jest": "^29.5.3",
@@ -48,9 +50,11 @@
     "eslint": "^8.34.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
+    "fs-extra": "10.1.0",
     "jest": "^29.6.1",
     "prettier": "2.8.1",
     "rimraf": "^5.0.1",
+    "semver": "7.3.8",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
