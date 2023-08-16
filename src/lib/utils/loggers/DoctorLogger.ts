@@ -19,7 +19,7 @@ export class DoctorLogger {
 
   public static warning(...args: any[]) {
     console.log(chalk.yellow(...args));
-    this.newLine()
+    this.newLine();
   }
 
   public static dashedLine() {
