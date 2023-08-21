@@ -1,0 +1,55 @@
+name: publish
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Run install
+        run: yarn install --frozen-lockfile
+      - name: Run build
+        run: yarn build
+      - name: Get current version
+        id: currentVersionTag
+        run: |
+          sudo apt-get install jq;
+          version=$(cat package.json| jq .version -r);
+          echo "value=v$version" >> $GITHUB_OUTPUT
+      - uses: mukunku/tag-exists-action@v1.2.0
+        id: checkTag
+        with: 
+          tag: ${{ steps.currentVersionTag.outputs.value }}
+      - name: Github Release
+        if: steps.checkTag.outputs.exists == 'false'
+        run: |
+          errout=$(mktemp);
+          gh release create ${{ steps.currentVersionTag.outputs.value }} \
+             -R $GITHUB_REPOSITORY \
+             -t ${{ steps.currentVersionTag.outputs.value }} \
+             --target main 2> $errout && true;
+          exitcode=$?;
+          if ([ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout); then
+            cat $errout;
+            exit $exitcode;
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - name: Publish packages
+        if: steps.checkTag.outputs.exists == 'false'
+        run: |
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
