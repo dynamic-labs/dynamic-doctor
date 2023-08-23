@@ -1,13 +1,11 @@
 import fetch from 'node-fetch';
 
 import { DoctorLogger } from '../loggers/DoctorLogger';
-import { getInstalledPackages } from '../getInstalledPackages';
 import { checkForSdkUpdates } from './checkForSdkUpdates';
 import { getPackageManager } from '../getPackageManager';
 import { IssueCollector } from '../issueCollector/IssueCollector';
 
 jest.mock('../loggers/DoctorLogger');
-jest.mock('../getInstalledPackages');
 jest.mock('../getPackageManager');
 jest.mock('node-fetch');
 jest.mock('../issueCollector/IssueCollector');
@@ -16,12 +14,13 @@ const mockError = jest.fn();
 const mockSuccess = jest.fn();
 const mockWarning = jest.fn();
 
-const mockGetInstalledPackages = getInstalledPackages as jest.Mock;
 const mockGetPackageManager = getPackageManager as jest.Mock;
 const mockFetch = fetch as unknown as jest.Mock;
 const mockIssueCollector = IssueCollector as jest.Mock;
 
 const issueCollector = new mockIssueCollector();
+
+let mockPackages = {};
 
 describe('checkForSdkUpdates', () => {
   beforeEach(() => {
@@ -30,7 +29,6 @@ describe('checkForSdkUpdates', () => {
     DoctorLogger.error = mockError;
     DoctorLogger.success = mockSuccess;
     DoctorLogger.warning = mockWarning;
-    mockGetInstalledPackages.mockReturnValue({});
     mockGetPackageManager.mockReturnValue({
       packageManager: 'npm',
       packageManagerVersion: '8.0.0',
@@ -38,7 +36,7 @@ describe('checkForSdkUpdates', () => {
   });
 
   it('should return error of missing sdk-react/sdk-react-core package', async () => {
-    await checkForSdkUpdates(issueCollector);
+    await checkForSdkUpdates(issueCollector, mockPackages);
 
     expect(issueCollector.addIssue).toHaveBeenCalledWith({
       type: 'error',
@@ -52,9 +50,9 @@ describe('checkForSdkUpdates', () => {
         getInstalledPackages: () => ({}),
       }));
 
-      mockGetInstalledPackages.mockReturnValue({
+      mockPackages = {
         '@dynamic-labs/sdk-react': '1.0.0',
-      });
+      };
     });
 
     it('should return success if up to date', async () => {
@@ -68,7 +66,7 @@ describe('checkForSdkUpdates', () => {
         }),
       );
 
-      await checkForSdkUpdates(issueCollector);
+      await checkForSdkUpdates(issueCollector, mockPackages);
 
       expect(mockSuccess).toHaveBeenCalledWith(
         'Your Dynamic SDK is up to date: 1.0.0',
@@ -86,7 +84,7 @@ describe('checkForSdkUpdates', () => {
         }),
       );
 
-      await checkForSdkUpdates(issueCollector);
+      await checkForSdkUpdates(issueCollector, mockPackages);
 
       expect(issueCollector.addIssue).toHaveBeenCalledWith({
         type: 'warning',
@@ -102,9 +100,9 @@ describe('checkForSdkUpdates', () => {
         getInstalledPackages: () => ({}),
       }));
 
-      mockGetInstalledPackages.mockReturnValue({
+      mockPackages = {
         '@dynamic-labs/sdk-react-core': '1.0.0',
-      });
+      };
     });
 
     it('should return success if up to date', async () => {
@@ -118,7 +116,7 @@ describe('checkForSdkUpdates', () => {
         }),
       );
 
-      await checkForSdkUpdates(issueCollector);
+      await checkForSdkUpdates(issueCollector, mockPackages);
 
       expect(mockSuccess).toHaveBeenCalledWith(
         'Your Dynamic SDK is up to date: 1.0.0',
@@ -136,7 +134,7 @@ describe('checkForSdkUpdates', () => {
         }),
       );
 
-      await checkForSdkUpdates(issueCollector);
+      await checkForSdkUpdates(issueCollector, mockPackages);
 
       expect(issueCollector.addIssue).toHaveBeenCalledWith({
         type: 'warning',

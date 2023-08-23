@@ -1,5 +1,4 @@
 import { getPackageManager } from '../getPackageManager';
-import { getInstalledPackages } from '../getInstalledPackages';
 import { getInstallCommand } from '../getInstallCommand';
 import { IssueCollector } from '../issueCollector/IssueCollector';
 
@@ -8,9 +7,10 @@ const basePackages = [
   '@dynamic-labs/sdk-react-core',
 ];
 
-export const checkDynamicVersions = (issueCollector: IssueCollector): void => {
-  const packages = getInstalledPackages();
-
+export const checkDynamicVersions = (
+  issueCollector: IssueCollector,
+  packages: any,
+): void => {
   const baseSdkReactVersion =
     packages['@dynamic-labs/sdk-react'] ||
     packages['@dynamic-labs/sdk-react-core'];
