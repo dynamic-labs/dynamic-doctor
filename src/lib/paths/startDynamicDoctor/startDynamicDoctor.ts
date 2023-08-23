@@ -9,7 +9,7 @@ import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
 import { IssueCollector } from '../../utils/issueCollector/IssueCollector';
 import { getInstalledPackages } from '../../utils/getInstalledPackages';
-import { checkForProhibitedPackages } from '../../utils/checkForProhibitedPackages/checkForProhibitedPackages';
+import { checkForProhibitedPackages } from '../../utils/checkForProhibitedPackages';
 
 export const startDynamicDoctor = async () => {
   const { confirm } = await prompt<{ confirm: boolean }>({
@@ -34,6 +34,7 @@ export const startDynamicDoctor = async () => {
     const packageJsons = getAllConfigs();
 
     await generateReport(basicData, packageJsons);
+    checkForProhibitedPackages(issueCollector, packageJsons);
 
     const packages = getInstalledPackages();
 
