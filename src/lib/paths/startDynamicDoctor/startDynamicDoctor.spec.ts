@@ -6,11 +6,13 @@ import { getBasicData } from '../../utils/getBasicData';
 import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
 import { IssueCollector } from '../../utils/issueCollector/IssueCollector';
+import { checkForProhibitedPackages } from '../../utils/checkForProhibitedPackages';
 
 import { startDynamicDoctor } from './startDynamicDoctor';
 
 jest.mock('../../utils/checkDynamicVersions');
 jest.mock('../../utils/checkForSdkUpdates');
+jest.mock('../../utils/checkForProhibitedPackages');
 jest.mock('../../utils/generateReport');
 jest.mock('../../utils/getAllConfigs');
 jest.mock('../../utils/getBasicData');
@@ -27,6 +29,10 @@ const mockIsInProjectRoot = isInProjectRoot as jest.MockedFunction<
 const mockCheckDynamicVersions = checkDynamicVersions as jest.MockedFunction<
   typeof checkDynamicVersions
 >;
+const mockCheckForProhibitedPackages =
+  checkForProhibitedPackages as jest.MockedFunction<
+    typeof checkForProhibitedPackages
+  >;
 const mockCheckForSdkUpdates = checkForSdkUpdates as jest.MockedFunction<
   typeof checkForSdkUpdates
 >;
@@ -53,6 +59,7 @@ describe('startDynamicDoctor', () => {
 
     expect(mockIsInProjectRoot).toHaveBeenCalled();
     expect(mockCheckDynamicVersions).toHaveBeenCalled();
+    expect(mockCheckForProhibitedPackages).toHaveBeenCalled();
     expect(mockCheckForSdkUpdates).toHaveBeenCalled();
     expect(mockGetBasicData).toHaveBeenCalled();
     expect(mockGetAllConfigs).toHaveBeenCalled();
@@ -89,6 +96,7 @@ describe('startDynamicDoctor', () => {
     );
     expect(mockIsInProjectRoot).toHaveBeenCalled();
     expect(mockCheckDynamicVersions).not.toHaveBeenCalled();
+    expect(mockCheckForProhibitedPackages).not.toHaveBeenCalled();
     expect(mockCheckForSdkUpdates).not.toHaveBeenCalled();
     expect(mockGetBasicData).not.toHaveBeenCalled();
     expect(mockGetAllConfigs).not.toHaveBeenCalled();
