@@ -1,0 +1,84 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+  sonarcloud: sonarsource/sonarcloud@1.1.1
+
+jobs:
+  lint:
+    resource_class: small
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+      - run: node --version
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: yarn
+          cache-version: v3
+          include-branch-in-cache-key: false
+      - run:
+          name: Lint
+          command: yarn lint:eslint
+  test:
+    resource_class: small
+    parallelism: 3
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./coverage
+      - run: node --version
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: yarn
+          cache-version: v2
+          include-branch-in-cache-key: false
+      - run:
+          name: Test
+          command: yarn test
+          no_output_timeout: 30m
+      - store_test_results:
+          path: ./test-results/
+      - store_artifacts:
+          path: ./test-results/
+      - persist_to_workspace:
+          root: ./coverage
+          paths:
+            - ./*
+  build:
+    resource_class: small
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+      - run: node --version
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: yarn
+          cache-version: v2
+          include-branch-in-cache-key: false
+      - run:
+          name: Build
+          command: yarn build
+  scan-and-upload-coverage:
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./coverage
+      - sonarcloud/scan
+
+workflows:
+  test:
+    jobs:
+      - lint
+      - test
+      - build
+      - scan-and-upload-coverage:
+          context:
+            - sonarcloud
+          requires:
+            - test
