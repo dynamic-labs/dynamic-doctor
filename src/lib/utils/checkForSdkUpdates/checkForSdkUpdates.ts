@@ -1,6 +1,5 @@
 import fetch from 'node-fetch';
 import { getInstallCommand } from '../getInstallCommand';
-import { getInstalledPackages } from '../getInstalledPackages';
 import { getPackageManager } from '../getPackageManager';
 import { DoctorLogger } from '../loggers/DoctorLogger';
 import { sdkVsSdkCoreDocsUrl } from '../../static/urls';
@@ -29,9 +28,10 @@ const isSdkDuplicated = (packages: any) => {
   );
 };
 
-export const checkForSdkUpdates = async (issueCollector: IssueCollector) => {
-  const packages = getInstalledPackages();
-
+export const checkForSdkUpdates = async (
+  issueCollector: IssueCollector,
+  packages: any,
+) => {
   if (isSdkDuplicated(packages)) {
     issueCollector.addIssue({
       type: 'error',

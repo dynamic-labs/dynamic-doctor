@@ -1,18 +1,13 @@
 import { getPackageManager } from '../getPackageManager';
-import { getInstalledPackages } from '../getInstalledPackages';
 import { getInstallCommand } from '../getInstallCommand';
 import { IssueCollector } from '../issueCollector/IssueCollector';
 
 import { checkDynamicVersions } from './checkDynamicVersions';
 
 jest.mock('../getPackageManager');
-jest.mock('../getInstalledPackages');
 jest.mock('../getInstallCommand');
 jest.mock('../issueCollector/IssueCollector');
 
-const mockGetInstalledPackages = getInstalledPackages as jest.MockedFunction<
-  typeof getInstalledPackages
->;
 const mockGetPackageManager = getPackageManager as jest.MockedFunction<
   typeof getPackageManager
 >;
@@ -32,9 +27,8 @@ describe('checkDynamicVersions', () => {
       '@dynamic-labs/sdk-react': '1.0.0',
       '@dynamic-labs/sdk-react-core': '1.0.0',
     };
-    mockGetInstalledPackages.mockReturnValue(packages);
 
-    checkDynamicVersions(issueCollector);
+    checkDynamicVersions(issueCollector, packages);
 
     expect(issueCollector.addIssue).not.toHaveBeenCalled();
   });
@@ -46,7 +40,6 @@ describe('checkDynamicVersions', () => {
       'other-package-1': '2.0.0',
       'other-package-2': '1.5.0',
     };
-    mockGetInstalledPackages.mockReturnValue(packages);
 
     mockGetPackageManager.mockReturnValue({
       packageManager: 'npm',
@@ -58,7 +51,7 @@ describe('checkDynamicVersions', () => {
     const expectedWarningMessage = `The Following packages must use the same version as @dynamic-labs/sdk-react.\nUpdate the following
 npm install other-package-1@1.0.0,other-package-2@1.0.0`;
 
-    checkDynamicVersions(issueCollector);
+    checkDynamicVersions(issueCollector, packages);
 
     expect(issueCollector.addIssue).toHaveBeenCalledWith({
       type: 'error',

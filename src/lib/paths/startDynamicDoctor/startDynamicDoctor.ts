@@ -8,6 +8,8 @@ import { getBasicData } from '../../utils/getBasicData';
 import { isInProjectRoot } from '../../utils/isInProjectRoot';
 import { DoctorLogger } from '../../utils/loggers/DoctorLogger';
 import { IssueCollector } from '../../utils/issueCollector/IssueCollector';
+import { getInstalledPackages } from '../../utils/getInstalledPackages';
+import { checkForProhibitedPackages } from '../../utils/checkForProhibitedPackages/checkForProhibitedPackages';
 
 export const startDynamicDoctor = async () => {
   const { confirm } = await prompt<{ confirm: boolean }>({
@@ -33,8 +35,10 @@ export const startDynamicDoctor = async () => {
 
     await generateReport(basicData, packageJsons);
 
-    checkDynamicVersions(issueCollector);
-    await checkForSdkUpdates(issueCollector);
+    const packages = getInstalledPackages();
+
+    checkDynamicVersions(issueCollector, packages);
+    await checkForSdkUpdates(issueCollector, packages);
 
     if (issueCollector.hasIssues()) {
       issueCollector.printIssues();
