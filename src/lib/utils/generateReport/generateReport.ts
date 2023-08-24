@@ -12,7 +12,7 @@ export const generateReport = async (
   basicData: BasicData,
   configFiles: ConfigFile[],
 ) => {
-  const templatePath = path.resolve(__dirname, '../../../templates/report.pug');
+  const templatePath = path.resolve(__dirname, 'src/templates/report.pug');
   const compiledFile = pug.compileFile(templatePath);
 
   const html = compiledFile({

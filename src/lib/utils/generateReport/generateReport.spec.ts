@@ -59,7 +59,7 @@ describe('generateReport', () => {
 
     expect(mockPath.resolve).toHaveBeenCalledWith(
       expect.any(String),
-      '../../../templates/report.pug',
+      'src/templates/report.pug',
     );
     expect(mockPug.compileFile).toHaveBeenCalledWith(mockTemplatePath);
     expect(mockFormatBasicData).toHaveBeenCalledWith(basicData);
