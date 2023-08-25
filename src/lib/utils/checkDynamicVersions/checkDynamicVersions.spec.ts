@@ -24,7 +24,7 @@ describe('checkDynamicVersions', () => {
 
   it('should return early if all packages are in sync', () => {
     const packages = {
-      '@dynamic-labs/sdk-react': '1.0.0',
+      '@dynamic-labs/wagmi-connector': '1.0.0',
       '@dynamic-labs/sdk-react-core': '1.0.0',
     };
 
@@ -35,7 +35,7 @@ describe('checkDynamicVersions', () => {
 
   it('should log warning with correct packages and versions if packages are not in sync', () => {
     const packages = {
-      '@dynamic-labs/sdk-react': '1.0.0',
+      '@dynamic-labs/wagmi-connector': '1.0.0',
       '@dynamic-labs/sdk-react-core': '1.0.0',
       'other-package-1': '2.0.0',
       'other-package-2': '1.5.0',
@@ -57,5 +57,28 @@ npm install other-package-1@1.0.0,other-package-2@1.0.0`;
       type: 'error',
       message: expectedWarningMessage,
     });
+  });
+
+  it('should log warning about modular sdk and early return', () => {
+    const packages = {
+      '@dynamic-labs/wagmi-connector': '2.0.0',
+      '@dynamic-labs/sdk-react': '1.0.0',
+    };
+
+    mockGetPackageManager.mockReturnValue({
+      packageManager: 'npm',
+      packageManagerVersion: '1.0.0',
+    });
+
+    const expectedWarningMessage = `You have installed an All-Chains SDK version. You installed 1 package(s) that are related to modular SDK setup. Please check the docs: https://docs.dynamic.xyz/concepts/modular.`;
+
+    checkDynamicVersions(issueCollector, packages);
+
+    expect(issueCollector.addIssue).toHaveBeenCalledWith({
+      type: 'warning',
+      message: expectedWarningMessage,
+    });
+
+    expect(mockGetInstallCommand).not.toHaveBeenCalled();
   });
 });
