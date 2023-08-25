@@ -29,6 +29,19 @@ export const checkDynamicVersions = (
     {},
   );
 
+  const otherDynamicPackagesAmount = Object.keys(
+    otherDynamicDependencies,
+  ).length;
+
+  if (packages['@dynamic-labs/sdk-react']) {
+    issueCollector.addIssue({
+      type: 'warning',
+      message: `You have installed an All-Chains SDK version. You installed ${otherDynamicPackagesAmount} package(s) that are related to modular SDK setup. Please check the docs: https://docs.dynamic.xyz/concepts/modular.`,
+    });
+
+    return;
+  }
+
   const dynamicPackagesOutWithWrongVersion = Object.keys(
     otherDynamicDependencies,
   ).reduce((result, packageName) => {
