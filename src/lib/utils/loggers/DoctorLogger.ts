@@ -8,7 +8,7 @@ export class DoctorLogger {
   }
 
   public static error(...args: any[]) {
-    console.error(chalk.red(...args));
+    console.log(chalk.red(...args));
     this.newLine();
   }
 

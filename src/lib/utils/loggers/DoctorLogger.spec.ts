@@ -23,7 +23,7 @@ describe('DoctorLogger', () => {
 
     DoctorLogger.error(mockMessage);
 
-    expect(console.error).toHaveBeenCalledWith(chalk.red(mockMessage));
+    expect(console.log).toHaveBeenCalledWith(chalk.red(mockMessage));
   });
 
   it('should log the success message correctly', () => {

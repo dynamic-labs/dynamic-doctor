@@ -59,6 +59,8 @@ export const startDynamicDoctor = async () => {
     }
   } else {
     DoctorLogger.newLine();
-    DoctorLogger.error('You are not in a project root directory.');
+    DoctorLogger.error(
+      'You are not in a project root directory.\nA root directory must contain a package.json and package manager lock (supported: yarn, npm, pnpm).',
+    );
   }
 };
