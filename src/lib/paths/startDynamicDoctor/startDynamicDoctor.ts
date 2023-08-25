@@ -26,26 +26,39 @@ export const startDynamicDoctor = async () => {
   }
 
   if (isInProjectRoot()) {
-    const issueCollector = new IssueCollector();
+    try {
+      const issueCollector = new IssueCollector();
 
-    DoctorLogger.dashedLine();
+      DoctorLogger.dashedLine();
+      const basicData = getBasicData();
+      const packageJsons = getAllConfigs();
 
-    const basicData = getBasicData();
-    const packageJsons = getAllConfigs();
+      await generateReport(basicData, packageJsons);
+      checkForProhibitedPackages(issueCollector, packageJsons);
 
-    await generateReport(basicData, packageJsons);
-    checkForProhibitedPackages(issueCollector, packageJsons);
+      const packages = getInstalledPackages();
 
-    const packages = getInstalledPackages();
+      checkDynamicVersions(issueCollector, packages);
+      await checkForSdkUpdates(issueCollector, packages);
 
-    checkDynamicVersions(issueCollector, packages);
-    await checkForSdkUpdates(issueCollector, packages);
+      if (issueCollector.hasIssues()) {
+        issueCollector.printIssues();
+      }
+    } catch (error) {
+      DoctorLogger.error('An error occurred while running dynamic doctor.');
 
-    if (issueCollector.hasIssues()) {
-      issueCollector.printIssues();
+      const { confirm: seeLogsConfirm } = await prompt<{ confirm: boolean }>({
+        type: 'confirm',
+        name: 'confirm',
+        message: 'Do you want to see the logs?',
+      });
+
+      if (seeLogsConfirm) {
+        DoctorLogger.info(error);
+      }
     }
   } else {
+    DoctorLogger.newLine();
     DoctorLogger.error('You are not in a project root directory.');
-    throw new Error('User is not in a project root directory.');
   }
 };
