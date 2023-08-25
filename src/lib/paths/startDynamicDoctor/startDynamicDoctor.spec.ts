@@ -1,3 +1,5 @@
+import * as enquirer from 'enquirer';
+
 import { checkDynamicVersions } from '../../utils/checkDynamicVersions';
 import { checkForSdkUpdates } from '../../utils/checkForSdkUpdates';
 import { generateReport } from '../../utils/generateReport';
@@ -20,7 +22,7 @@ jest.mock('../../utils/isInProjectRoot');
 jest.mock('../../utils/loggers/DoctorLogger');
 jest.mock('../../utils/issueCollector/IssueCollector');
 jest.mock('enquirer', () => ({
-  prompt: jest.fn().mockReturnValue({ confirm: true }),
+  prompt: jest.fn(),
 }));
 
 const mockIsInProjectRoot = isInProjectRoot as jest.MockedFunction<
@@ -50,6 +52,10 @@ const mockIssueCollector = IssueCollector as jest.Mock;
 describe('startDynamicDoctor', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    jest.spyOn(enquirer, 'prompt').mockResolvedValue({
+      confirm: true,
+    });
   });
 
   it('should execute the function correctly in the project root directory', async () => {
@@ -84,12 +90,10 @@ describe('startDynamicDoctor', () => {
     expect(printIssuesMock).toHaveBeenCalled();
   });
 
-  it('should throw an error and log an error message when not in the project root directory', async () => {
+  it('should log an error message when not in the project root directory', async () => {
     mockIsInProjectRoot.mockReturnValue(false);
 
-    await expect(startDynamicDoctor()).rejects.toThrow(
-      'User is not in a project root directory.',
-    );
+    await startDynamicDoctor();
 
     expect(DoctorLogger.error).toHaveBeenCalledWith(
       'You are not in a project root directory.',
@@ -101,5 +105,47 @@ describe('startDynamicDoctor', () => {
     expect(mockGetBasicData).not.toHaveBeenCalled();
     expect(mockGetAllConfigs).not.toHaveBeenCalled();
     expect(mockGenerateReport).not.toHaveBeenCalled();
+  });
+
+  it('should show errors when customer wants and something throws', async () => {
+    mockIsInProjectRoot.mockReturnValue(true);
+
+    mockGetBasicData.mockImplementation(() => {
+      throw new Error('Something went wrong');
+    });
+
+    await startDynamicDoctor();
+
+    expect(DoctorLogger.error).toHaveBeenCalledWith(
+      'An error occurred while running dynamic doctor.',
+    );
+
+    expect(DoctorLogger.info).toHaveBeenCalledWith(
+      new Error('Something went wrong'),
+    );
+  });
+
+  it('should not show errors when customer declines and something throws', async () => {
+    jest
+      .spyOn(enquirer, 'prompt')
+      .mockResolvedValueOnce({
+        confirm: true,
+      })
+      .mockResolvedValueOnce({
+        confirm: false,
+      });
+    mockIsInProjectRoot.mockReturnValue(true);
+
+    mockGetBasicData.mockImplementation(() => {
+      throw new Error('Something went wrong');
+    });
+
+    await startDynamicDoctor();
+
+    expect(DoctorLogger.error).toHaveBeenCalledWith(
+      'An error occurred while running dynamic doctor.',
+    );
+
+    expect(DoctorLogger.info).not.toHaveBeenCalled();
   });
 });
