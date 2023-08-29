@@ -11,7 +11,6 @@ const listOfProhibitedPackages = [
   '@onflow/fcl',
   '@randlabs/myalgo-connect',
   '@wagmi/core',
-  'wagmi',
   '@walletconnect/client',
   '@walletconnect/ethereum-provider',
   '@walletconnect/universal-provider',
