@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/dynamic-labs/dynamic-doctor/issues"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "bin": {
     "dynamic-doctor": "./dist/index.js"
