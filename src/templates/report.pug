@@ -10,6 +10,18 @@ fieldset
 
 hr
 
+h2 Found issues
+
+each item in issues
+  fieldset
+    if item.type == "error"
+      legend(style="font-weight: bold; color: red;") #{item.type}
+    else
+      legend(style="font-weight: bold; color: orange;") #{item.type}
+    div(style="margin-bottom: 10px;") #{item.message}
+
+hr
+
 h2 Config files
 
 each configFile in configFiles

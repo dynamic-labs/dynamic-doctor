@@ -33,13 +33,14 @@ export const startDynamicDoctor = async () => {
       const basicData = getBasicData();
       const packageJsons = getAllConfigs();
 
-      await generateReport(basicData, packageJsons);
       checkForProhibitedPackages(issueCollector, packageJsons);
 
       const packages = getInstalledPackages();
 
       checkDynamicVersions(issueCollector, packages);
       await checkForSdkUpdates(issueCollector, packages);
+
+      await generateReport(basicData, packageJsons, issueCollector.issues);
 
       if (issueCollector.hasIssues()) {
         issueCollector.printIssues();

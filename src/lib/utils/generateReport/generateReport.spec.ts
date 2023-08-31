@@ -55,7 +55,7 @@ describe('generateReport', () => {
     const mockHtml = '<html>Mock HTML</html>';
     mockCompiledFile.mockReturnValue(mockHtml);
 
-    generateReport(basicData, configFiles);
+    generateReport(basicData, configFiles, []);
 
     expect(mockPath.resolve).toHaveBeenCalledWith(
       expect.any(String),
@@ -66,6 +66,7 @@ describe('generateReport', () => {
     expect(mockCompiledFile).toHaveBeenCalledWith({
       basicData: mockFormattedBasicData,
       configFiles,
+      issues: [],
     });
     expect(createHtmlFile).toHaveBeenCalledWith(mockHtml);
   });
