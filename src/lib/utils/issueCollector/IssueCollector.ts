@@ -1,6 +1,6 @@
 import { DoctorLogger } from '../loggers/DoctorLogger';
 
-type Issue = {
+export type Issue = {
   type: 'error' | 'warning';
   message: string;
 };
