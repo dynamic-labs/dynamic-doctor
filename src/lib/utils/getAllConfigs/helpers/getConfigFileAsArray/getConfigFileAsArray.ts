@@ -5,8 +5,10 @@ export type ConfigFileRow = {
   text: string;
 };
 
+const spacesRegex = /^(\s*)/;
+
 const countSpaces = (line: string): number => {
-  const match = line.match(/^(\s*)/);
+  const match = spacesRegex.exec(line);
   return match ? match[0].length : 0;
 };
 
