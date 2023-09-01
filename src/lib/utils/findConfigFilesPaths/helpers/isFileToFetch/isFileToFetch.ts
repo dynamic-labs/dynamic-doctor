@@ -17,14 +17,10 @@ const filesToFetch = [
 
 export const isFileToFetch = (file: string): boolean => {
   return filesToFetch.some((fileToFetch) => {
-    if (fileToFetch.type === 'file') {
-      return fileToFetch.name === file;
-    }
-
-    if (fileToFetch.regex) {
+    if (fileToFetch.type === 'pattern' && fileToFetch.regex) {
       return fileToFetch.regex.test(file);
     }
 
-    return false;
+    return fileToFetch.name === file;
   });
 };

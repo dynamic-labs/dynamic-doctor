@@ -53,6 +53,24 @@ describe('getConfigFileAsArray', () => {
     expect(DoctorLogger.error).not.toHaveBeenCalled();
   });
 
+  it('should handle an lines without spaces', () => {
+    const mockPackageJson = `{
+"name": "example-package",
+      "version": "1.0.0"
+    }`;
+
+    const result = getConfigFileAsArray(mockPackageJson, 'package.json');
+
+    expect(result).toEqual([
+      { spaces: 0, text: '{' },
+      { spaces: 2, text: '"name": "example-package",' },
+      { spaces: 2, text: '"version": "1.0.0"' },
+      { spaces: 0, text: '}' },
+    ]);
+
+    expect(DoctorLogger.error).not.toHaveBeenCalled();
+  });
+
   it('should handle parsing error and log an error message', () => {
     const mockPackageJson =
       '{ "name": "example-package", "version": "1.0.0", }';
