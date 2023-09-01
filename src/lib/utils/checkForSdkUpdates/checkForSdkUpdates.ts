@@ -66,6 +66,4 @@ export const checkForSdkUpdates = async (
     type: 'warning',
     message: `Your Dynamic SDK is out of date: ${baseSdkReactVersion}.\nLatest version is ${latestVersion}.\nCheck out our docs and try our latest using your package manager: ${installCommand} ${whichSdk}@latest`,
   });
-
-  return;
 };
