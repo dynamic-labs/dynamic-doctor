@@ -20,8 +20,6 @@ const listOfProhibitedPackages = [
   'starknet',
 ];
 
-const packageJsonRegex = /package\.json$/;
-
 type ProhibitedDependencies = {
   path: string;
   prohibitedDependencies: string[];
@@ -36,7 +34,7 @@ export const checkForProhibitedPackages = (
     const packageJsonPath = packageJson.path;
     const packageJsonContent = packageJson.configFile;
 
-    const isPackageJson = packageJsonRegex.test(packageJsonPath);
+    const isPackageJson = packageJsonPath.endsWith('package.json');
 
     if (!isPackageJson) {
       return;
