@@ -9,7 +9,9 @@ const spacesRegex = /^(\s*)/;
 
 const countSpaces = (line: string): number => {
   const match = spacesRegex.exec(line);
-  return match ? match[0].length : 0;
+
+  // We can ignore else as it should never happen
+  return match ? match[0].length : /* istanbul ignore next */ 0;
 };
 
 export const getConfigFileAsArray = (

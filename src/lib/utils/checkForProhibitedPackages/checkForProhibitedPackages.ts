@@ -27,10 +27,10 @@ type ProhibitedDependencies = {
 
 export const checkForProhibitedPackages = (
   issueCollector: IssueCollector,
-  packageJsons: ConfigFile[],
+  configFiles: ConfigFile[],
 ): void => {
   const prohibitedDependencies: ProhibitedDependencies[] = [];
-  packageJsons.forEach((packageJson) => {
+  configFiles.forEach((packageJson) => {
     const packageJsonPath = packageJson.path;
     const packageJsonContent = packageJson.configFile;
 

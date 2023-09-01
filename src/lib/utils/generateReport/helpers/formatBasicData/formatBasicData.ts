@@ -12,10 +12,6 @@ type Value = {
 export const formatBasicData = (
   data: Record<string, Value>,
 ): FormattedData[] => {
-  if (!data) {
-    return [];
-  }
-
   const formattedData: FormattedData[] = [];
 
   Object.entries(data).forEach(([key, value]) => {

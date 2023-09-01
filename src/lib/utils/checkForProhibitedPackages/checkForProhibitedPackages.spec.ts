@@ -4,7 +4,11 @@ import { IssueCollector } from '../issueCollector/IssueCollector';
 describe('checkForProhibitedPackages', () => {
   it('should add issues for prohibited dependencies', () => {
     const mockIssueCollector = new IssueCollector();
-    const mockPackageJsons = [
+    const mockConfigFiles = [
+      {
+        path: 'path/to/tsconfig.json',
+        configFile: [],
+      },
       {
         path: 'path/to/package1/package.json',
         configFile: [
@@ -17,7 +21,7 @@ describe('checkForProhibitedPackages', () => {
       },
     ];
 
-    checkForProhibitedPackages(mockIssueCollector, mockPackageJsons);
+    checkForProhibitedPackages(mockIssueCollector, mockConfigFiles);
 
     expect(mockIssueCollector.issues).toEqual([
       {

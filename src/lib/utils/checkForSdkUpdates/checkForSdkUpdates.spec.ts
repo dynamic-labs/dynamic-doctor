@@ -4,6 +4,7 @@ import { DoctorLogger } from '../loggers/DoctorLogger';
 import { checkForSdkUpdates } from './checkForSdkUpdates';
 import { getPackageManager } from '../getPackageManager';
 import { IssueCollector } from '../issueCollector/IssueCollector';
+import { sdkVsSdkCoreDocsUrl } from '../../static/urls';
 
 jest.mock('../loggers/DoctorLogger');
 jest.mock('../getPackageManager');
@@ -140,6 +141,28 @@ describe('checkForSdkUpdates', () => {
         type: 'warning',
         message:
           'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest',
+      });
+    });
+  });
+
+  describe('when both sdk-react and sdk-react-core are used', () => {
+    beforeEach(() => {
+      jest.mock('../getInstalledPackages', () => ({
+        getInstalledPackages: () => ({}),
+      }));
+
+      mockPackages = {
+        '@dynamic-labs/sdk-react': '1.0.0',
+        '@dynamic-labs/sdk-react-core': '1.0.0',
+      };
+    });
+
+    it('should return error if both sdk-react and sdk-react-core are used', async () => {
+      await checkForSdkUpdates(issueCollector, mockPackages);
+
+      expect(issueCollector.addIssue).toHaveBeenCalledWith({
+        type: 'error',
+        message: `You have both @dynamic-labs/sdk-react and @dynamic-labs/sdk-react-core installed. Please remove one of them. Check the difference here: ${sdkVsSdkCoreDocsUrl}`,
       });
     });
   });

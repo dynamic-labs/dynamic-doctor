@@ -20,6 +20,25 @@ describe('getFramework', () => {
     process.cwd = jest.fn().mockReturnValue(mockCwd);
   });
 
+  it('should return unknown framework and version if no recognized framework is present', () => {
+    const mockUnknownPackageJson = {
+      dependencies: {
+        unknownFramework: '^10.0.0',
+      },
+    };
+
+    mockFindConfigFilesPaths.mockReturnValue(mockPackageJsonPaths);
+    mockReadFileSync.mockReturnValue(JSON.stringify(mockUnknownPackageJson));
+
+    const result = getFramework();
+
+    expect(mockFindConfigFilesPaths).toHaveBeenCalledWith(mockCwd);
+    expect(result).toEqual({
+      framework: 'unknown',
+      frameworkVersion: 'unknown',
+    });
+  });
+
   it('should get framework and version correctly when astro is present', () => {
     const mockAstroPackageJson = {
       dependencies: {
@@ -88,7 +107,7 @@ describe('getFramework', () => {
     });
   });
 
-  it('should return unknown framework and version if no recognized framework is present', () => {
+  it('should return unknown framework and version if no dependencies', () => {
     mockReadFileSync.mockReturnValueOnce('{}').mockReturnValueOnce('{}');
 
     const result = getFramework();

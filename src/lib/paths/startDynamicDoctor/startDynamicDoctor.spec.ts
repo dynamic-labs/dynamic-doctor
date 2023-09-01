@@ -73,6 +73,17 @@ describe('startDynamicDoctor', () => {
     expect(DoctorLogger.error).not.toHaveBeenCalled();
   });
 
+  it('should stop running if customer answer no', async () => {
+    jest.spyOn(enquirer, 'prompt').mockResolvedValue({
+      confirm: false,
+    });
+
+    await startDynamicDoctor();
+
+    expect(mockIsInProjectRoot).not.toHaveBeenCalled();
+    expect(DoctorLogger.info).toHaveBeenCalledWith('Aborting dynamic doctor.');
+  });
+
   it('should print the issues if any were found', async () => {
     const printIssuesMock = jest.fn();
 
