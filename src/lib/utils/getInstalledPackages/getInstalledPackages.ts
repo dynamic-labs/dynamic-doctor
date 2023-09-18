@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import { getPackageManager } from '../getPackageManager';
 
 const getPositionInLine = (
   string: string,
@@ -14,8 +15,11 @@ const packageNamesWithDifferentVersion = [
   '@dynamic-labs/sdk-api',
 ];
 
-export const getInstalledPackages = (): any =>
-  execSync('npm ls')
+export const getInstalledPackages = (): any => {
+  const command =
+    getPackageManager().packageManager === 'bun' ? 'bun pm ls' : 'npm ls';
+
+  return execSync(command)
     .toString()
     .split(/├──|└──|\+--|`--/)
     .slice(1)
@@ -40,3 +44,4 @@ export const getInstalledPackages = (): any =>
         [packageName]: version,
       };
     }, {});
+};

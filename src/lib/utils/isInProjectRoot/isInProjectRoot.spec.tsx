@@ -16,7 +16,8 @@ describe('isInProjectRoot', () => {
       .mockReturnValueOnce(true) // package.json exists
       .mockReturnValueOnce(true) // yarn.lock exists
       .mockReturnValueOnce(false) // package-lock.json does not exist
-      .mockReturnValueOnce(false); // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false) // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false); // bun.lockb does not exist
 
     const result = isInProjectRoot();
 
@@ -29,7 +30,8 @@ describe('isInProjectRoot', () => {
       .mockReturnValueOnce(true) // package.json exists
       .mockReturnValueOnce(false) // yarn.lock does not exist
       .mockReturnValueOnce(true) // package-lock.json exists
-      .mockReturnValueOnce(false); // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false) // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false); // bun.lockb does not exist
 
     const result = isInProjectRoot();
 
@@ -42,7 +44,22 @@ describe('isInProjectRoot', () => {
       .mockReturnValueOnce(true) // package.json exists
       .mockReturnValueOnce(false) // yarn.lock does not exist
       .mockReturnValueOnce(false) // package-lock.json exists
-      .mockReturnValueOnce(true); // pnpm-lock.yaml does exist
+      .mockReturnValueOnce(true) // pnpm-lock.yaml does exist
+      .mockReturnValueOnce(false); // bun.lockb does not exist
+
+    const result = isInProjectRoot();
+
+    expect(result).toBe(true);
+  });
+
+  it('should return true if all required files exist (using bun.lockb)', () => {
+    mockExistsSync
+      .mockReturnValueOnce(true) // node_modules exists
+      .mockReturnValueOnce(true) // package.json exists
+      .mockReturnValueOnce(false) // yarn.lock does not exist
+      .mockReturnValueOnce(false) // package-lock.json exists
+      .mockReturnValueOnce(false) // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(true); // bun.lockb does exist
 
     const result = isInProjectRoot();
 
@@ -54,8 +71,9 @@ describe('isInProjectRoot', () => {
       .mockReturnValueOnce(false) // node_modules does not exist
       .mockReturnValueOnce(true) // package.json exists
       .mockReturnValueOnce(false) // yarn.lock does not exist
-      .mockReturnValueOnce(false) // package-lock.json does not exists
-      .mockReturnValueOnce(false); // pnpm-lock.yaml does not exists
+      .mockReturnValueOnce(false) // package-lock.json does not exist
+      .mockReturnValueOnce(false) // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false); // bun.lockb does not exist
 
     const result = isInProjectRoot();
 
@@ -78,7 +96,8 @@ describe('isInProjectRoot', () => {
       .mockReturnValueOnce(true) // package.json exists
       .mockReturnValueOnce(false) // yarn.lock does not exist
       .mockReturnValueOnce(false) // package-lock.json does not exist
-      .mockReturnValueOnce(false); // pnpm-lock.yaml does not exists
+      .mockReturnValueOnce(false) // pnpm-lock.yaml does not exist
+      .mockReturnValueOnce(false); // bun.lockb does not exist
 
     const result = isInProjectRoot();
 

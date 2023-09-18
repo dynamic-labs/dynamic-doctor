@@ -29,6 +29,7 @@ describe('getPackageManager', () => {
     expect(mockExistsSync).toHaveBeenCalledWith('./package-lock.json');
     expect(mockExistsSync).not.toHaveBeenCalledWith('./yarn.lock');
     expect(mockExistsSync).not.toHaveBeenCalledWith('./pnpm-lock.yaml');
+    expect(mockExistsSync).not.toHaveBeenCalledWith('./bun.lockb');
     expect(mockGetPackageManagerVersion).toHaveBeenCalledWith(
       mockPackageManager,
     );
@@ -53,6 +54,7 @@ describe('getPackageManager', () => {
     expect(mockExistsSync).toHaveBeenCalledWith('./package-lock.json');
     expect(mockExistsSync).toHaveBeenCalledWith('./yarn.lock');
     expect(mockExistsSync).not.toHaveBeenCalledWith('./pnpm-lock.yaml');
+    expect(mockExistsSync).not.toHaveBeenCalledWith('./bun.lockb');
     expect(mockGetPackageManagerVersion).toHaveBeenCalledWith(
       mockPackageManager,
     );
@@ -77,6 +79,33 @@ describe('getPackageManager', () => {
     expect(mockExistsSync).toHaveBeenCalledWith('./package-lock.json');
     expect(mockExistsSync).toHaveBeenCalledWith('./yarn.lock');
     expect(mockExistsSync).toHaveBeenCalledWith('./pnpm-lock.yaml');
+    expect(mockExistsSync).not.toHaveBeenCalledWith('./bun.lockb');
+    expect(mockGetPackageManagerVersion).toHaveBeenCalledWith(
+      mockPackageManager,
+    );
+    expect(result).toEqual({
+      packageManager: mockPackageManager,
+      packageManagerVersion: mockPackageManagerVersion,
+    });
+  });
+
+  it('should return bun as the package manager', () => {
+    const mockPackageManager = 'bun';
+    const mockPackageManagerVersion = '1.0.1';
+
+    mockExistsSync
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true);
+    mockGetPackageManagerVersion.mockReturnValue(mockPackageManagerVersion);
+
+    const result = getPackageManager();
+
+    expect(mockExistsSync).toHaveBeenCalledWith('./package-lock.json');
+    expect(mockExistsSync).toHaveBeenCalledWith('./yarn.lock');
+    expect(mockExistsSync).toHaveBeenCalledWith('./pnpm-lock.yaml');
+    expect(mockExistsSync).toHaveBeenCalledWith('./bun.lockb');
     expect(mockGetPackageManagerVersion).toHaveBeenCalledWith(
       mockPackageManager,
     );
