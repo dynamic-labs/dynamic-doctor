@@ -1,13 +1,23 @@
 import { execSync } from 'child_process';
 
 import { getInstalledPackages } from './getInstalledPackages';
+import { getPackageManager } from '../getPackageManager';
 
 jest.mock('child_process');
+jest.mock('../getPackageManager');
 const mockExecSync = execSync as jest.MockedFunction<typeof execSync>;
+const mockGetPackageManager = getPackageManager as jest.MockedFunction<
+  typeof getPackageManager
+>;
 
 describe('getInstalledPackages', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    mockGetPackageManager.mockReturnValue({
+      packageManager: 'npm',
+      packageManagerVersion: '7.19.1',
+    });
   });
 
   it('should return the installed packages correctly', () => {
@@ -82,6 +92,31 @@ describe('getInstalledPackages', () => {
     const result = getInstalledPackages();
 
     expect(mockExecSync).toHaveBeenCalledWith('npm ls');
+    expect(result).toEqual({
+      '@dynamic-labs/sdk-react': '0.18.8',
+    });
+  });
+
+  it('should use bun to check for packages', () => {
+    mockGetPackageManager.mockReturnValue({
+      packageManager: 'bun',
+      packageManagerVersion: '1.0.1',
+    });
+
+    const mockNpmLsOutput = `
+    +-- @dynamic-labs/sdk-react@0.18.8 -> ./node_modules/.pnpm/@dynamic-labs+sdk-react@0.18.8_@babel+core@7.22.11_@dynamic-labs+logger@0.18.8_@dynamic-labs+_vw5snfujc4zocxdbb4h3pbdqvu/node_modules/@dynamic-labs/sdk-react
+    +-- @eslint-community/eslint-utils@4.4.0 extraneous -> ./node_modules/.pnpm/@eslint-community+eslint-utils@4.4.0_eslint@8.47.0/node_modules/@eslint-community/eslint-utils
+    +-- @eslint-community/regexpp@4.7.0 extraneous -> ./node_modules/.pnpm/@eslint-community+regexpp@4.7.0/node_modules/@eslint-community/regexpp
+    +-- @eslint/eslintrc@2.1.2 extraneous -> ./node_modules/.pnpm/@eslint+eslintrc@2.1.2/node_modules/@eslint/eslintrc
+    +-- @eslint/js@8.47.0 extraneous -> ./node_modules/.pnpm/@eslint+js@8.47.0/node_modules/@eslint/js
+    \`-- eslint-scope@7.2.2 extraneous -> ./node_modules/.pnpm/eslint-scope@7.2.2/node_modules/eslint-scope
+    `;
+
+    mockExecSync.mockReturnValue(Buffer.from(mockNpmLsOutput));
+
+    const result = getInstalledPackages();
+
+    expect(mockExecSync).toHaveBeenCalledWith('bun pm ls');
     expect(result).toEqual({
       '@dynamic-labs/sdk-react': '0.18.8',
     });
