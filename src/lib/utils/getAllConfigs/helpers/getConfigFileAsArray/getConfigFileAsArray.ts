@@ -19,6 +19,12 @@ export const getConfigFileAsArray = (
   path: string,
 ): ConfigFileRow[] => {
   try {
+    // Remove all comments from the config file
+    configFile = configFile.replace(
+      /\\"|"(?:\\"|[^"])*"|(\/\/.*|\/\*[\s\S]*?\*\/)/g,
+      (m, g) => (g ? '' : m),
+    );
+
     const formattedConfigFile = JSON.stringify(JSON.parse(configFile), null, 2);
 
     return formattedConfigFile.split('\n').map((line) => {

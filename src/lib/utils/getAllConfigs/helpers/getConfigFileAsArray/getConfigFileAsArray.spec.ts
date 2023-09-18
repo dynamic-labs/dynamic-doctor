@@ -71,6 +71,28 @@ describe('getConfigFileAsArray', () => {
     expect(DoctorLogger.error).not.toHaveBeenCalled();
   });
 
+  it('should remove all comments from config files', () => {
+    const mockPackageJson = `{
+      "test1": "test", // Single line comment
+      "test2": "test", /* Multi
+      line
+      comment */
+      "other": "1.0.0"
+    }`;
+
+    const result = getConfigFileAsArray(mockPackageJson, 'package.json');
+
+    expect(result).toEqual([
+      { spaces: 0, text: '{' },
+      { spaces: 2, text: '"test1": "test",' },
+      { spaces: 2, text: '"test2": "test",' },
+      { spaces: 2, text: '"other": "1.0.0"' },
+      { spaces: 0, text: '}' },
+    ]);
+
+    expect(DoctorLogger.error).not.toHaveBeenCalled();
+  });
+
   it('should handle parsing error and log an error message', () => {
     const mockPackageJson =
       '{ "name": "example-package", "version": "1.0.0", }';
