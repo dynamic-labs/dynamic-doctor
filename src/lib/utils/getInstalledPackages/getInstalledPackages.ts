@@ -15,9 +15,50 @@ const packageNamesWithDifferentVersion = [
   '@dynamic-labs/sdk-api',
 ];
 
+const getCommand = (packageManager: string) => {
+  if (packageManager === 'bun') {
+    return 'bun pm ls';
+  }
+
+  if (packageManager === 'pnpm') {
+    return 'pnpm ls';
+  }
+
+  return 'npm ls';
+};
+
+const getPnpmInstalledPackages = (command: string) => {
+  return execSync(command)
+    .toString()
+    .split('\n')
+    .map((i) => i.trim())
+    .filter((i) => i !== '')
+    .slice(3) //remove useless lines
+    .reduce((dependencies, line) => {
+      if (!line.includes('@dynamic-labs')) {
+        return dependencies;
+      }
+
+      const [packageName, version] = line.split(' ');
+
+      if (packageNamesWithDifferentVersion.includes(packageName)) {
+        return dependencies;
+      }
+
+      return {
+        ...dependencies,
+        [packageName]: version,
+      };
+    }, {});
+};
+
 export const getInstalledPackages = (): any => {
-  const command =
-    getPackageManager().packageManager === 'bun' ? 'bun pm ls' : 'npm ls';
+  const packageManager = getPackageManager().packageManager;
+  const command = getCommand(packageManager);
+
+  if (packageManager === 'pnpm') {
+    return getPnpmInstalledPackages(command);
+  }
 
   return execSync(command)
     .toString()
