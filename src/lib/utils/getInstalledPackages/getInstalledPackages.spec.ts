@@ -121,4 +121,33 @@ describe('getInstalledPackages', () => {
       '@dynamic-labs/sdk-react': '0.18.8',
     });
   });
+
+  it('should use pnpm to check for packages', () => {
+    mockGetPackageManager.mockReturnValue({
+      packageManager: 'pnpm',
+      packageManagerVersion: '1.0.1',
+    });
+
+    const mockNpmLsOutput = `
+    Legend: production dependency, optional only, dev only
+
+    pnpm-test@1.0.0 /Users/bartosz.kownacki/Documents/repos/pnpm-test
+    
+    dependencies:
+    @dynamic-labs/sdk-api 0.0.321
+    @dynamic-labs/sdk-react-core 0.19.5
+    @dynamic-labs/wagmi-connector 0.19.5
+    typescript 5.3.2
+    `;
+
+    mockExecSync.mockReturnValue(Buffer.from(mockNpmLsOutput));
+
+    const result = getInstalledPackages();
+
+    expect(mockExecSync).toHaveBeenCalledWith('pnpm ls');
+    expect(result).toEqual({
+      '@dynamic-labs/sdk-react-core': '0.19.5',
+      '@dynamic-labs/wagmi-connector': '0.19.5',
+    });
+  });
 });
