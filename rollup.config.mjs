@@ -11,6 +11,7 @@ export default {
     format: 'cjs',
   },
   external: [
+    'archy',
     'commander',
     'enquirer',
     'node-fetch',

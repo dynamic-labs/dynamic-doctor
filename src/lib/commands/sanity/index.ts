@@ -1,0 +1,1 @@
+export { sanityCommand } from './sanityCommand';
