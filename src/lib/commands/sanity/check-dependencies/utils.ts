@@ -1,3 +1,4 @@
+import { DYNAMIC_PACKAGES, IGNORE_PACKAGES } from './constants';
 import { DeepPartial } from './types';
 
 /**
@@ -6,7 +7,7 @@ import { DeepPartial } from './types';
  * @returns {boolean}
  */
 export function isObject(item: any): item is object {
-  return item && typeof item === 'object' && !Array.isArray(item);
+  return Boolean(item && typeof item === 'object' && !Array.isArray(item));
 }
 
 /**
@@ -16,7 +17,7 @@ export function isObject(item: any): item is object {
  */
 export function mergeDeep<T extends Record<string, any>>(
   target: T,
-  ...sources: DeepPartial<T>[]
+  ...sources: DeepPartial<T | Record<string, any>>[]
 ): T {
   if (!sources.length) return target;
   const source = sources.shift();
@@ -37,4 +38,19 @@ export function mergeDeep<T extends Record<string, any>>(
 
 export const isEmpty = (obj: any) => {
   return Object.keys(obj ?? {}).length === 0 || JSON.stringify(obj) === '{}';
+};
+
+export const isDynamicPackage = (...dynamicRefs: string[]) => {
+  const refs = dynamicRefs.flat().map((ref) => ref.split(':'));
+  return refs.some((ref) => {
+    return ref.some((refPart) => {
+      return DYNAMIC_PACKAGES.some(
+        (p) => p.test(refPart) && !isIgnoredPackage(refPart),
+      );
+    });
+  });
+};
+
+export const isIgnoredPackage = (packageName: string) => {
+  return IGNORE_PACKAGES.includes(packageName);
 };

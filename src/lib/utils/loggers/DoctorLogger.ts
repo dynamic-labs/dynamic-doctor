@@ -18,30 +18,6 @@ export class DoctorLogger {
     console.log(chalk.yellow(...args));
   }
 
-  public static white(...args: any[]) {
-    console.log(chalk.white(...args));
-  }
-
-  public static grey(...args: any[]) {
-    console.log(chalk.grey(...args));
-  }
-
-  public static bold(...args: any[]) {
-    console.log(chalk.bold(...args));
-  }
-
-  public static boldWhite(...args: any[]) {
-    console.log(chalk.bold.white(...args));
-  }
-
-  public static boldGrey(...args: any[]) {
-    console.log(chalk.bold.grey(...args));
-  }
-
-  public static boldRed(...args: any[]) {
-    console.log(chalk.bold.red(...args));
-  }
-
   public static dashedLine() {
     const processColumns = process.stdout.columns;
     let columns: number = processColumns;
