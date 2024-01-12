@@ -19,7 +19,9 @@ export const treeCommand = () => {
     '[path]',
     'Path of the project using Dynamic SDK (defaults to current directory)',
   );
-  command.action((path) => console.log(JSON.stringify(buildModuleTree(path, path), null, 2)));
+  command.action((path) =>
+    console.log(JSON.stringify(buildModuleTree(path, path), null, 2)),
+  );
   command.enablePositionalOptions();
   return command;
-}
+};

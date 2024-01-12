@@ -65,6 +65,16 @@ const resolveLineage = (modulePath: string) => {
   return lineage;
 };
 
+// Handle npm aliases
+const getNameOrAlias = (name: string, lineage: string[]) => {
+  const lineageName = lineage.at(-1);
+  // Handle aliases
+  if (lineageName && lineageName !== name) {
+    return lineageName;
+  }
+  return name;
+};
+
 const buildModuleTreeRecursive = (
   basePath: string,
   rootBasePath: string,
@@ -78,23 +88,26 @@ const buildModuleTreeRecursive = (
   if (fs.existsSync(packageJsonPath)) {
     const modulePath = isRootPkg ? '.' : path.relative(rootBasePath, basePath);
     const packageJson = readJsonFile<PackageJson>(packageJsonPath);
-    const ref = resolveLineage(modulePath).join(REF_SEPARATOR);
+    const moduleLineage = resolveLineage(modulePath);
+    const ref = moduleLineage.join(REF_SEPARATOR);
     isDynamicFlag = isDynamicFlag || isDynamicPackage(ref);
+
+    const packageName = getNameOrAlias(packageJson.name, moduleLineage);
 
     // If we are a nested module, set the moduleTree branch to the current module.
     currentModuleBranch = isRootPkg
       ? currentModuleBranch
-      : (currentModuleBranch['modules'][packageJson.name] = initialBranch());
+      : (currentModuleBranch['modules'][packageName] = initialBranch());
 
     Object.assign(currentModuleBranch, {
-      name: packageJson.name,
+      name: packageName,
       version: packageJson.version,
       isDynamic: isDynamicFlag,
       dependencies: packageJson.dependencies,
       peerDependencies: packageJson.peerDependencies,
       peerDependenciesMeta: packageJson.peerDependenciesMeta,
       ref,
-      moduleLineage: resolveLineage(modulePath),
+      moduleLineage,
       modules: {},
       modulePath,
     });

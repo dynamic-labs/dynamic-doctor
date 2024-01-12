@@ -46,6 +46,12 @@ const resolveModuleTreeDependenciesModule = (
 
   if (deps) {
     Object.entries(deps).forEach(([moduleName, version]) => {
+      // Handle npm aliases
+      const aliasMatch = version.match(/^npm:(.*)@(.*)/);
+      if (aliasMatch) {
+        version = aliasMatch[2];
+      }
+
       if (!moduleTree.resolved[moduleName]) {
         const resolvedRef = resolveModule(
           rootModuleTree,
