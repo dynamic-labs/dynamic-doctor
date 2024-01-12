@@ -1,4 +1,5 @@
-import { prompt } from 'enquirer';
+import pkg from 'enquirer';
+const { prompt } = pkg;
 
 import { checkDynamicVersions } from '../../utils/checkDynamicVersions';
 import { checkForSdkUpdates } from '../../utils/checkForSdkUpdates';

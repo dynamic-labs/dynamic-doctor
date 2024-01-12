@@ -11,6 +11,7 @@ export default {
     format: 'cjs',
   },
   external: [
+    'archy',
     'commander',
     'enquirer',
     'node-fetch',
@@ -20,6 +21,7 @@ export default {
     'child_process',
     'chalk',
     'fs/promises',
+    'semver',
   ],
   plugins: [
     commonjs(),

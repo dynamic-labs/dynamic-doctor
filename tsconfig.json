@@ -22,5 +22,19 @@
     "outDir": "./dist"
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*", "bin/index.ts"]
+  "include": ["src/**/*", "bin/index.ts"],
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "es2020"
+    },
+    "project": "./tsconfig.json",
+    "moduleTypes": {
+      "./**/ts-node/**/*.ts": "esm",
+      "./**/src/**/*.ts": "esm",
+      "./bin/*": "esm"
+    },
+    "logError": true,
+    "esm": true
+  }
 }

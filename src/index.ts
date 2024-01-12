@@ -1,6 +1,8 @@
 import { Command } from 'commander';
 
 import { doctorCommand } from './lib/commands/doctor';
+import { sanityCommand } from './lib/commands/sanity';
+import { treeCommand } from './lib/commands/sanity/sanityCommand';
 
 export class DynamicCLI {
   program: Command;
@@ -12,6 +14,10 @@ export class DynamicCLI {
     this.program.addCommand(doctorCommand(), {
       isDefault: true,
     });
+
+    this.program.addCommand(sanityCommand());
+
+    this.program.addCommand(treeCommand());
   }
 
   run() {

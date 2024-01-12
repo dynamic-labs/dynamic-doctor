@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auditResults fixture fixture_01 should audit a module tree 1`] = `{}`;
+
+exports[`auditResults fixture fixture_02 should audit a module tree 1`] = `
+{
+  ".:@dynamic-labs/example:exampleDepA": {
+    "installedVersion": null,
+    "name": "exampleDepA",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "1.70.1",
+    "satisfied": false,
+    "type": "dependency",
+  },
+  ".:@dynamic-labs/example:exampleDepB": {
+    "installedVersion": null,
+    "name": "exampleDepB",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "^5.25.0",
+    "satisfied": false,
+    "type": "dependency",
+  },
+  ".:@dynamic-labs/example:exampleDepC": {
+    "installedVersion": null,
+    "name": "exampleDepC",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "1.1.0-alpha.10",
+    "satisfied": false,
+    "type": "dependency",
+  },
+  ".:@dynamic-labs/example:examplePeerA": {
+    "installedVersion": null,
+    "name": "examplePeerA",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "^1.19.13",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+}
+`;
+
+exports[`auditResults fixture fixture_03 should audit a module tree 1`] = `
+{
+  ".:@dynamic-labs/ethers-v5:ethers": {
+    "installedVersion": null,
+    "name": "ethers",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "^5",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+  ".:@dynamic-labs/ethers-v6:ethers": {
+    "installedVersion": null,
+    "name": "ethers",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "^6",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+  ".:@dynamic-labs/wagmi-connector:eventemitter3": {
+    "dependency": {
+      "dependencies": undefined,
+      "isDynamic": true,
+      "moduleLineage": [
+        ".",
+        "eventemitter3",
+      ],
+      "modulePath": "node_modules/eventemitter3",
+      "modules": {},
+      "name": "eventemitter3",
+      "peerDependencies": undefined,
+      "peerDependenciesMeta": undefined,
+      "ref": ".:eventemitter3",
+      "resolved": {},
+      "version": "4.0.7",
+    },
+    "installedVersion": "4.0.7",
+    "name": "eventemitter3",
+    "optional": false,
+    "ref": ".:eventemitter3",
+    "requiredVersion": "5.0.1",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+  ".:@dynamic-labs/wallet-connector-core:eventemitter3": {
+    "dependency": {
+      "dependencies": undefined,
+      "isDynamic": true,
+      "moduleLineage": [
+        ".",
+        "eventemitter3",
+      ],
+      "modulePath": "node_modules/eventemitter3",
+      "modules": {},
+      "name": "eventemitter3",
+      "peerDependencies": undefined,
+      "peerDependenciesMeta": undefined,
+      "ref": ".:eventemitter3",
+      "resolved": {},
+      "version": "4.0.7",
+    },
+    "installedVersion": "4.0.7",
+    "name": "eventemitter3",
+    "optional": false,
+    "ref": ".:eventemitter3",
+    "requiredVersion": "5.0.1",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+  ".:@perawallet/connect:algosdk": {
+    "installedVersion": null,
+    "name": "algosdk",
+    "optional": false,
+    "ref": null,
+    "requiredVersion": "^2.1.0",
+    "satisfied": false,
+    "type": "peerDependency",
+  },
+}
+`;
