@@ -21,6 +21,7 @@ export default {
     'child_process',
     'chalk',
     'fs/promises',
+    'semver',
   ],
   plugins: [
     commonjs(),

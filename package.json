@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/dynamic-labs/dynamic-doctor/issues"
   },
-  "version": "0.0.5",
+  "version": "0.1.0-beta.0",
   "license": "MIT",
   "bin": {
     "dynamic-doctor": "./dist/index.js"
@@ -43,6 +43,7 @@
     "commander": "^10.0.1",
     "enquirer": "^2.4.1",
     "node-fetch": "2.6.12",
+    "semver": "^7.3.8",
     "pug": "^3.0.2"
   },
   "devDependencies": {
@@ -74,7 +75,6 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-preserve-shebangs": "^0.2.0",
-    "semver": "7.3.8",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
