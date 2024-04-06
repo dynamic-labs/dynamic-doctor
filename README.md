@@ -24,7 +24,7 @@ Create an issue if you find any bug or want to suggest an improvement. [Create a
 1. Install dependencies `yarn`
 2. Run `yarn build`
 3. Next pack local library `yarn pack`
-4. Install package `npm i -g dynamic-doctor-v0.0.5.tgz`
+4. Install package `npm i -g dynamic-doctor-v0.0.6.tgz`
 
 That's your setup!
 
