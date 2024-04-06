@@ -143,6 +143,100 @@ describe('checkForSdkUpdates', () => {
           'Your Dynamic SDK is out of date: 1.0.0.\nLatest version is 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest',
       });
     });
+
+    describe('when alpha version is used', () => {
+      beforeEach(() => {
+        jest.mock('../getInstalledPackages', () => ({
+          getInstalledPackages: () => ({}),
+        }));
+
+        mockPackages = {
+          '@dynamic-labs/sdk-react-core': '2.0.0-alpha.1',
+        };
+      });
+
+      it('should return warning if alpha version is outdated', async () => {
+        mockFetch.mockImplementation(() =>
+          Promise.resolve({
+            json: () => ({
+              'dist-tags': {
+                latest: '1.0.0',
+                alpha: '2.0.0-alpha.2',
+              },
+            }),
+          }),
+        );
+
+        await checkForSdkUpdates(issueCollector, mockPackages);
+
+        expect(issueCollector.addIssue).toHaveBeenCalledWith({
+          type: 'warning',
+          message:
+            "Your Dynamic SDK is out of date: 2.0.0-alpha.1.\nLatest alpha version is 2.0.0-alpha.2.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@alpha.\nIf you don't need alpha features we recommend using the latest stable version: npm install @dynamic-labs/sdk-react-core@latest. Please make sure to apply the version to all of Dynamic packages.",
+        });
+      });
+
+      it('should return success if alpha version is latest', async () => {
+        mockFetch.mockImplementation(() =>
+          Promise.resolve({
+            json: () => ({
+              'dist-tags': {
+                latest: '1.0.0',
+                alpha: '2.0.0-alpha.1',
+              },
+            }),
+          }),
+        );
+
+        await checkForSdkUpdates(issueCollector, mockPackages);
+
+        expect(mockSuccess).toHaveBeenCalledWith(
+          'Your Dynamic SDK is up to date with our latest alpha: 2.0.0-alpha.1',
+        );
+      });
+
+      it('should return warning if we already released a stable version for this alpha', async () => {
+        mockFetch.mockImplementation(() =>
+          Promise.resolve({
+            json: () => ({
+              'dist-tags': {
+                latest: '2.0.0',
+                alpha: '3.0.0-alpha.1',
+              },
+            }),
+          }),
+        );
+
+        await checkForSdkUpdates(issueCollector, mockPackages);
+
+        expect(issueCollector.addIssue).toHaveBeenCalledWith({
+          type: 'warning',
+          message:
+            'Your Dynamic SDK is an outdated alpha version.\nWe already released a stable version which contains all of the alpha features: 2.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest.',
+        });
+      });
+
+      it('should return warning if we already released a newer stable version for this alpha', async () => {
+        mockFetch.mockImplementation(() =>
+          Promise.resolve({
+            json: () => ({
+              'dist-tags': {
+                latest: '3.0.0',
+                alpha: '4.0.0-alpha.1',
+              },
+            }),
+          }),
+        );
+
+        await checkForSdkUpdates(issueCollector, mockPackages);
+
+        expect(issueCollector.addIssue).toHaveBeenCalledWith({
+          type: 'warning',
+          message:
+            'Your Dynamic SDK is an outdated alpha version.\nWe already released a stable version which contains all of the alpha features: 3.0.0.\nCheck out our docs and try our latest using your package manager: npm install @dynamic-labs/sdk-react-core@latest.',
+        });
+      });
+    });
   });
 
   describe('when both sdk-react and sdk-react-core are used', () => {
